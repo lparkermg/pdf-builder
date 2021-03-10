@@ -6,15 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Templates\DefaultNoDataTemplate.cshtml" />
     <None Remove="Assets\Templates\FirstTemplate.cshtml" />
+    <None Remove="Assets\Themes\DefaultNoDataTheme.css" />
     <None Remove="Assets\Themes\DefaultTheme.css" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Assets\Templates\FirstTemplate.cshtml">
+    <Content Include="Assets\Templates\DefaultNoDataTemplate.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Themes\DefaultTheme.css">
+    <Content Include="Assets\Themes\DefaultNoDataTheme.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
