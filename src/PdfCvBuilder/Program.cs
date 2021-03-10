@@ -1,5 +1,6 @@
 ﻿using PdfCvBuilder.Entities;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -25,13 +26,19 @@ namespace PdfCvBuilder
             }
 
             // Populate Template and Theme services.
-
+            var generator = new CvGeneratorService(config, _templatePath);
             // Load selected Template + Theme
+            DefaultNoDataModel model = new DefaultNoDataModel();
+            if (config.Template != TemplateType.DefaultNoData)
+            {
+                Console.WriteLine($"{config.Template} has not been implemented.");
+                return 2;
+            }
 
             // parse markdown data file
 
             // Process data to template
-
+            generator.Build<DefaultNoDataModel>(model);
             // Apply theme
 
             // Convert html to pdf and save
@@ -59,7 +66,7 @@ namespace PdfCvBuilder
             {
                 var errorMessage = new StringBuilder($"TemplateType parsing error: Failed to parse {arguments[0]}.");
                 errorMessage.AppendLine();
-                errorMessage.AppendLine($"Available Template Types: {string.Join(", ", Enum.GetValues(typeof(TemplateType)))}");
+                errorMessage.AppendLine($"Available Template Types: {string.Join(", ", Enum.GetNames(typeof(TemplateType)))}");
                 Console.WriteLine(errorMessage.ToString());
                 return false;
             }
@@ -68,7 +75,7 @@ namespace PdfCvBuilder
             {
                 var errorMessage = new StringBuilder($"ThemeType parsing error: Failed to parse {arguments[1]}.");
                 errorMessage.AppendLine();
-                errorMessage.AppendLine($"Available Theme Types: {string.Join(", ", Enum.GetValues(typeof(ThemeType)))}");
+                errorMessage.AppendLine($"Available Theme Types: {string.Join(", ", Enum.GetNames(typeof(ThemeType)))}");
                 Console.WriteLine(errorMessage.ToString());
                 return false;
             }
