@@ -2,6 +2,6 @@
 {
     internal enum TemplateType
     {
-        DefaultNoData,
+        Default,
     }
 }

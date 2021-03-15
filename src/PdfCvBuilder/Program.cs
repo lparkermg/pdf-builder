@@ -29,7 +29,7 @@ namespace PdfCvBuilder
             var generator = new CvGeneratorService(config, _templatePath);
             // Load selected Template + Theme
             GeneralModel model = new GeneralModel(DateTime.Now, new string[0]);
-            if (config.Template != TemplateType.DefaultNoData)
+            if (config.Template != TemplateType.Default)
             {
                 Console.WriteLine($"{config.Template} has not been implemented.");
                 return 2;

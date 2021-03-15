@@ -2,6 +2,6 @@
 {
     internal enum ThemeType
     {
-        DefaultNoData,
+        Default,
     }
 }
