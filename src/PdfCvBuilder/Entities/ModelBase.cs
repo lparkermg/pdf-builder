@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 
 namespace PdfCvBuilder.Entities
 {
-    public class ModelBase
+    public sealed class GeneralModel
     {
-        public ModelBase(DateTime now)
+        public GeneralModel(DateTime now, params string[] content)
         {
             GeneratedOn = now;
+            Content = content;
         }
 
         public DateTime GeneratedOn { get; init; }
+
+        public string[] Content { get; init; }
     }
 }

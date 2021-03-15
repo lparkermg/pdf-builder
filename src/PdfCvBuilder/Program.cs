@@ -14,7 +14,7 @@ namespace PdfCvBuilder
         static int Main(string[] args)
         {
             // Validate template and theme paths (Exist and are populated with files).
-            if(!ValidatePaths(_templatePath, _themePath))
+            if (!ValidatePaths(_templatePath, _themePath))
             {
                 return 1;
             }
@@ -28,7 +28,7 @@ namespace PdfCvBuilder
             // Populate Template and Theme services.
             var generator = new CvGeneratorService(config, _templatePath);
             // Load selected Template + Theme
-            DefaultNoDataModel model = new DefaultNoDataModel();
+            GeneralModel model = new GeneralModel(DateTime.Now, new string[0]);
             if (config.Template != TemplateType.DefaultNoData)
             {
                 Console.WriteLine($"{config.Template} has not been implemented.");
@@ -38,7 +38,7 @@ namespace PdfCvBuilder
             // parse markdown data file
 
             // Process data to template
-            generator.Build<DefaultNoDataModel>(model);
+            generator.Build<GeneralModel>(model);
             // Apply theme
 
             // Convert html to pdf and save
