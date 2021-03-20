@@ -34,8 +34,6 @@ namespace PdfCvBuilder
             converter.Options.MarginRight = 5;
 
             var doc = converter.ConvertHtmlString(processedHtml);
-            Console.WriteLine(processedHtml);
-            File.WriteAllLines(Path.Combine("output", $"{DateTime.Now.ToString("ddMMyyyy")}-{_configuration.Template}.html"), new string[] { processedHtml });
             doc.Save(Path.Combine("output", $"{DateTime.Now.ToString("ddMMyyyy")}-{_configuration.Template}.pdf"));
             doc.Close();
         }
