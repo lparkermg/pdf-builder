@@ -8,14 +8,17 @@ namespace PdfCvBuilder.Entities
 {
     public sealed class GeneralModel
     {
-        public GeneralModel(DateTime now, params string[] content)
+        public GeneralModel(DateTime now, string themePath, params string[] content)
         {
             GeneratedOn = now;
             Content = content;
+            ThemePath = themePath;
         }
 
         public DateTime GeneratedOn { get; init; }
 
         public string[] Content { get; init; }
+
+        public string ThemePath { get; init; }
     }
 }

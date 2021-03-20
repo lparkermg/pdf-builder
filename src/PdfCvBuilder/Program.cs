@@ -1,4 +1,5 @@
-﻿using PdfCvBuilder.Entities;
+﻿using Markdig;
+using PdfCvBuilder.Entities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,21 +28,23 @@ namespace PdfCvBuilder
 
             // Populate Template and Theme services.
             var generator = new CvGeneratorService(config, _templatePath);
-            // Load selected Template + Theme
-            GeneralModel model = new GeneralModel(DateTime.Now, new string[0]);
             if (config.Template != TemplateType.Default)
             {
                 Console.WriteLine($"{config.Template} has not been implemented.");
                 return 2;
             }
 
-            // parse markdown data file
+            var data = new string[0];
+            var fileData = File.ReadAllText(config.DataFilePath);
+            data = fileData.Split("=====");
 
-            // Process data to template
+            var content = new List<string>();
+            foreach(var split in data)
+            {
+                content.Add($"<article>{Markdown.ToHtml(split)}</article>");
+            }
+            var model = new GeneralModel(DateTime.Now, $"{_themePath}{config.Theme}Theme.css", content.ToArray());
             generator.Build<GeneralModel>(model);
-            // Apply theme
-
-            // Convert html to pdf and save
             return 0;
         }
 

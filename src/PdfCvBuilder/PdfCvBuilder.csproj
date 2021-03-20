@@ -6,22 +6,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Assets\Templates\DefaultNoDataTemplate.cshtml" />
+    <None Remove="Assets\Templates\DefaultTemplate.cshtml" />
     <None Remove="Assets\Templates\FirstTemplate.cshtml" />
-    <None Remove="Assets\Themes\DefaultNoDataTheme.css" />
     <None Remove="Assets\Themes\DefaultTheme.css" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Assets\Templates\DefaultNoDataTemplate.cshtml">
+    <Content Include="Assets\Templates\DefaultTemplate.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Themes\DefaultNoDataTheme.css">
+    <Content Include="Assets\Themes\DefaultTheme.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Markdig" Version="0.23.0" />
     <PackageReference Include="RazorEngineCore" Version="2021.3.1" />
     <PackageReference Include="Select.HtmlToPdf.NetCore" Version="20.2.0" />
   </ItemGroup>

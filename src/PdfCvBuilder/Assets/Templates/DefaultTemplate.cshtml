@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        csstheme/file
+    </style>
+</head>
+    <body>
+        @foreach(var content in @Model.Content)
+        {
+            @content;
+        }
+    </body>
+    <footer>
+        @Model.GeneratedOn
+    </footer>
+</html>
