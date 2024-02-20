@@ -3,5 +3,6 @@
     internal enum ThemeType
     {
         Default,
+        Sidebar
     }
 }

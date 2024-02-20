@@ -26,7 +26,7 @@ namespace PdfCvBuilder
             var template = razorEngine.Compile<RazorEngineTemplateBase<GeneralModel>>(templateText);
             var processedHtml = template.Run(i => i.Model = model);
             processedHtml = processedHtml.Replace("csstheme/file", File.ReadAllText(model.ThemePath));
-
+            
             var converter = new HtmlToPdf();
             converter.Options.MarginTop = 10;
             converter.Options.MarginBottom = 5;

@@ -28,7 +28,7 @@ namespace PdfCvBuilder
 
             // Populate Template and Theme services.
             var generator = new CvGeneratorService(config, _templatePath);
-            if (config.Template != TemplateType.Default)
+            if (config.Template != TemplateType.Default && config.Template != TemplateType.Sidebar)
             {
                 Console.WriteLine($"{config.Template} has not been implemented.");
                 return 2;

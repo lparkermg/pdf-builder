@@ -3,5 +3,6 @@
     internal enum TemplateType
     {
         Default,
+        Sidebar
     }
 }
