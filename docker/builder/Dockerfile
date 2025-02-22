@@ -18,6 +18,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS final
 
 RUN apk update
 RUN apk add icu-libs
+RUN apk add libgdiplus
 
 COPY --from=build /build/out .
 

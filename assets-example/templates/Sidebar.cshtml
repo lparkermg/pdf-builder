@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        csstheme/file
+    </style>
+</head>
+    <body>
+        <section>
+        @for(var i = 0; i < 3; i++)
+        {
+            @Model.Content[i]
+        }
+        </section>
+        <section>
+        @for(var i = 3; i < @Model.Content.Length; i++)
+        {
+            @Model.Content[i]
+        }
+        </section>
+    </body>
+</html>

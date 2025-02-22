@@ -1,5 +1,8 @@
-﻿using Google.Protobuf.WellKnownTypes;
+﻿using Google.Protobuf;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using Markdig;
+using PdfBuilder.Service.Generators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +14,12 @@ namespace PdfBuilder.Service
     public class CVService : CV.CVBase
     {
         private readonly AssetLoader _assetLoader;
+        private readonly PdfGenerator _pdfGenerator;
 
         public CVService(AssetLoader assetLoader)
         {
             _assetLoader = assetLoader;
+            _pdfGenerator = new PdfGenerator();
         }
 
         public override Task<AvailableTemplatesResponse> GetAvailableTemplates(Empty request, ServerCallContext context)
@@ -47,12 +52,17 @@ namespace PdfBuilder.Service
             return Task.FromResult(response);
         }
 
-        public override Task<GenerateCVResponse> GenerateCV(GenerateCVRequest request, ServerCallContext context)
+        public override async Task<GenerateCVResponse> GenerateCV(GenerateCVRequest request, ServerCallContext context)
         {
+            var template = _assetLoader.LoadTemplate(request.Template);
+            var theme = _assetLoader.LoadTheme(request.Theme);
+            var content = request.Content.Select(v => Markdown.ToHtml(v)).ToArray();
+            var sidebar = request.Content.Select(v => Markdown.ToHtml(v)).ToArray();
+            var data = await _pdfGenerator.Generate(new GeneralModel { Content = content, Sidebar = sidebar }, template, theme);
             var response = new GenerateCVResponse();
             response.GeneratedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
-
-            return Task.FromResult(response);
+            response.PdfData = ByteString.CopyFrom(data);
+            return response;
         }
 
     }

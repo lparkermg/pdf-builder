@@ -1,4 +1,7 @@
 using Grpc.Net.Client;
+using Microsoft.AspNetCore.Mvc;
+using PdfBuilder.Api.Models.Request;
+using System.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,6 +60,23 @@ app.MapGet("/templates", () =>
 })
 .WithName("AvailableTemplates")
 .WithOpenApi();
+
+app.MapPost("/cv", ([FromBody] CvRequest body) =>
+{
+    var channel = setupChannel(new Uri("https://pdfbuilder-builder:5001"));
+    var client = new CV.CVClient(channel);
+    var request = new GenerateCVRequest
+    {
+        Template = body.Template,
+        Theme = body.Theme,
+    };
+
+    request.Content.AddRange(body.Content);
+    request.Content.AddRange(body.Sidebar);
+    var data = client.GenerateCV(request);
+    
+    return Results.File(data.PdfData.ToByteArray(), "application/pdf", lastModified: DateTime.Parse(data.GeneratedAt));
+});
 
 app.Run();
 

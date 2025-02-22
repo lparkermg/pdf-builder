@@ -3,5 +3,10 @@
         "id": 0,
         "name": "Default",
         "path": "/assets/themes/Default.css"
+    },
+    {
+        "id": 1,
+        "name": "Sidebar",
+        "path": "/assets/themes/Sidebar.css"
     }
 ]
