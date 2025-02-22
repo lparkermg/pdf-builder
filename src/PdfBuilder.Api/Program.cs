@@ -1,3 +1,5 @@
+using Grpc.Net.Client;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,38 +9,55 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+var setupChannel = (Uri uri) =>
+{
+    GrpcChannel channel;
+    if (app.Environment.IsDevelopment())
+    {
+        // NOTE: This is pretty hacky, but gRPC doesn't support self-signed certificates.
+        var httpClientHandler = new HttpClientHandler();
+        // Return `true` to allow certificates that are untrusted/invalid
+        httpClientHandler.ServerCertificateCustomValidationCallback =
+            HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+        var httpClient = new HttpClient(httpClientHandler);
+        channel = GrpcChannel.ForAddress(uri, new GrpcChannelOptions { HttpClient = httpClient });
+    }
+    else
+    {
+        channel = GrpcChannel.ForAddress(uri);
+    }
+
+    return channel;
+};
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    Console.WriteLine("Setting up swagger");
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
+app.MapGet("/themes", () =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    var channel = setupChannel(new Uri("https://pdfbuilder-builder:5001"));
+    var client = new CV.CVClient(channel);
+    return client.GetAvailableThemes(new Google.Protobuf.WellKnownTypes.Empty());
 })
-.WithName("GetWeatherForecast")
+.WithName("AvailableThemes")
+.WithOpenApi();
+
+app.MapGet("/templates", () =>
+{
+    var channel = setupChannel(new Uri("https://pdfbuilder-builder:5001"));
+    var client = new CV.CVClient(channel);
+    return client.GetAvailableTemplates(new Google.Protobuf.WellKnownTypes.Empty());
+})
+.WithName("AvailableTemplates")
 .WithOpenApi();
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+

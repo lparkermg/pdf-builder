@@ -3,8 +3,8 @@ import "google/protobuf/empty.proto";
 
 service CV {
 	rpc GenerateCV(GenerateCVRequest) returns (GenerateCVResponse);
-	rpc GetAvailableTemplates(google.protobuf.Empty) returns (AvailableTemplates);
-	rpc GetAvailableThemes(google.protobuf.Empty) returns (AvailableThemes);
+	rpc GetAvailableTemplates(google.protobuf.Empty) returns (AvailableTemplatesResponse);
+	rpc GetAvailableThemes(google.protobuf.Empty) returns (AvailableThemesResponse);
 }
 
 message GenerateCVRequest {
@@ -19,19 +19,21 @@ message GenerateCVResponse {
 	bytes pdfData = 2;
 }
 
-message AvailableTemplates {
-	message Template {
-		int32 id = 1;
-		string name = 2;
-	}
+message Template {
+	int32 id = 1;
+	string name = 2;
+}
 
+message AvailableTemplatesResponse {
 	repeated Template templates = 1;
 }
 
-message AvailableThemes {
-	message Theme {
-		int32 id = 1;
-		string name = 2;
-	}
+message Theme {
+	int32 id = 1;
+	string name = 2;
+}
+
+message AvailableThemesResponse {
+	
 	repeated Theme themes = 1;
 }
