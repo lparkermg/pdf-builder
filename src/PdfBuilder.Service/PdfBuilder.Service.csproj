@@ -25,9 +25,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="itext7.bouncy-castle-adapter" Version="9.1.0" />
-    <PackageReference Include="itext7.pdfhtml" Version="6.1.0" />
     <PackageReference Include="Markdig" Version="0.40.0" />
+    <PackageReference Include="PuppeteerSharp" Version="20.1.2" />
     <PackageReference Include="RazorEngineCore" Version="2024.4.1" />
   </ItemGroup>
   <ItemGroup>

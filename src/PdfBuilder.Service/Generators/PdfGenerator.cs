@@ -1,5 +1,4 @@
-﻿using iText.Html2pdf;
-using iText.Kernel.Pdf;
+﻿using PuppeteerSharp;
 using RazorEngineCore;
 using System;
 using System.Collections.Generic;
@@ -17,14 +16,18 @@ namespace PdfBuilder.Service.Generators
             var template = await razorEngine.CompileAsync<RazorEngineTemplateBase<GeneralModel>>(templateData);
             var html = await template.RunAsync(i => i.Model = model);
             html = html.Replace("csstheme/file", themeData);
-            File.WriteAllText("./temp.html", html);
 
-            HtmlConverter.ConvertToPdf(new FileInfo("./temp.html"), new FileInfo("./temp.pdf"));
-
-            var data = await File.ReadAllBytesAsync("./temp.pdf");
-
-            File.Delete("./temp.html");
-            File.Delete("./temp.pdf");
+            //var browserFetcher = new BrowserFetcher();
+            //await browserFetcher.DownloadAsync();
+            // TODO: Change this up to keep the browser running, while the service is running and only handle pages in this section of the code.
+            await using var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = true, Args = new[] { "--no-sandbox" } });
+            await using var page = await browser.NewPageAsync();
+            await page.EmulateMediaTypeAsync(PuppeteerSharp.Media.MediaType.Screen);
+            await page.SetContentAsync(html);
+            await page.EvaluateExpressionHandleAsync("document.fonts.ready"); // Wait for fonts to be loaded. Omitting this might result in no text rendered in pdf.
+            
+            var data = await page.PdfDataAsync(new PdfOptions { PrintBackground = true, });
+            await page.CloseAsync();
             return data;
         }
     }

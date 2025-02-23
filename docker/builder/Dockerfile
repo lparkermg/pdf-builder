@@ -20,6 +20,13 @@ RUN apk update
 RUN apk add icu-libs
 RUN apk add libgdiplus
 
+RUN apk add --no-cache \
+    udev \
+    ttf-freefont \
+    chromium
+
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
 COPY --from=build /build/out .
 
 ENTRYPOINT ["dotnet", "PdfBuilder.Service.dll"]

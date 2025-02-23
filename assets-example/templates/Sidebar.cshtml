@@ -7,15 +7,15 @@
 </head>
     <body>
         <section>
-        @for(var i = 0; i < 3; i++)
+        @foreach(var content in @Model.Sidebar)
         {
-            @Model.Content[i]
+            @content
         }
         </section>
         <section>
-        @for(var i = 3; i < @Model.Content.Length; i++)
+        @foreach(var content in @Model.Content)
         {
-            @Model.Content[i]
+            @content;
         }
         </section>
     </body>
