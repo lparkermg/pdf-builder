@@ -10,6 +10,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(ops =>
+{
+    // TODO: Fix this to be a bit more restrictive.
+    ops.AddPolicy("CorsPolicy",
+        builder => builder
+            .AllowAnyMethod()
+            .SetIsOriginAllowed((h) => h.Contains("localhost"))
+            .AllowAnyHeader());
+});
+
 var app = builder.Build();
 
 var setupChannel = (Uri uri) =>
@@ -33,15 +43,16 @@ var setupChannel = (Uri uri) =>
     return channel;
 };
 
+app.UseCors("CorsPolicy");
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    Console.WriteLine("Setting up swagger");
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.MapGet("/themes", () =>
 {
