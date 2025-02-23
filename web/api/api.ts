@@ -1,4 +1,6 @@
-async function getThemes(): Promise<ThemeResponse> {
+import { ThemeResponse, TemplateResponse, CvRequest} from '../models/api';
+
+export async function getThemes(): Promise<ThemeResponse> {
     const resp = await fetch("http://localhost:5117/themes")
 
     if (!resp.ok){
@@ -8,7 +10,7 @@ async function getThemes(): Promise<ThemeResponse> {
     return await resp.json() as ThemeResponse;
 }
 
-async function getTemplates(): Promise<TemplateResponse> {
+export async function getTemplates(): Promise<TemplateResponse> {
     const resp = await fetch("http://localhost:5117/templates");
 
     if (!resp.ok){
@@ -18,7 +20,7 @@ async function getTemplates(): Promise<TemplateResponse> {
     return await resp.json() as TemplateResponse;
 }
 
-async function postCv(request: CvRequest): Promise<Uint8Array>{
+export async function postCv(request: CvRequest): Promise<Uint8Array>{
     const resp = await fetch("http://localhost:5117/cv", {
         method: 'POST',
         body: JSON.stringify(request),

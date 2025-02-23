@@ -1,4 +1,4 @@
-interface CvRequest {
+export interface CvRequest {
     template: number;
     theme: number;
     content: string[];
@@ -10,10 +10,10 @@ interface DataPair {
     name: string;
 }
 
-interface ThemeResponse {
+export interface ThemeResponse {
     themes: DataPair[];
 }
 
-interface TemplateResponse {
+export interface TemplateResponse {
     templates: DataPair[];
 }
