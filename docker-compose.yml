@@ -29,7 +29,6 @@ services:
     volumes:
       - ${USERPROFILE}\.aspnet\https:/https/:ro
       - .\assets-example:/assets/:ro
-      - .\output:/fileout/:rw
     networks:
       pdfbuilder_net:
     
