@@ -1,0 +1,1 @@
+export const API_BASE_URI = process.env.PDFBUILDER_WEB_SETTINGS__API__BaseUri

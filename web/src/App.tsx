@@ -4,7 +4,7 @@ import SelectorSections from './Components/SelectorsSections'
 import { TemplateResponse, ThemeResponse } from '../models/api'
 import * as api from '../api/api';
 import ContentSections from './Components/ContentSections'
-import * as fs from 'fs';
+import DownloadLink from './Components/DownloadLink';
 
 function App() {
   const [themes, setThemes] = useState<ThemeResponse>({themes:[]})
@@ -15,6 +15,9 @@ function App() {
 
   const [content, setContent] = useState<string[]>([])
   const [sidebar, setSidebar] = useState<string[]>([])
+
+  const [hasGenerated, setHasGenerated] = useState<boolean>(false);
+  const [pdfLink, setPdfLink] = useState<string>("")
 
   useEffect(() => {
     fetchAvailableDetails();
@@ -67,11 +70,10 @@ function App() {
   async function onDataSubmit(){
     const data = await api.postCv({ template: selectedTemplate, theme: selectedTheme, content: content, sidebar: sidebar});
 
-    fs.writeFile("document.pdf", data, (err) => {
-      if (err){
-        console.error({ err });
-      }
-    });
+    if (data){
+      setPdfLink(data);
+      setHasGenerated(true);
+    }
   }
 
   return (
@@ -86,6 +88,8 @@ function App() {
           Submit Data
         </button>
       </div>
+      {hasGenerated && <DownloadLink uri={pdfLink} display="Click here to download your PDF" />}
+
     </>
   )
 }
