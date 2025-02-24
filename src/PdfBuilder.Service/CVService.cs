@@ -1,13 +1,8 @@
-﻿using Google.Protobuf;
-using Google.Protobuf.WellKnownTypes;
+﻿using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Markdig;
+using PdfBuilder.Common.FileSystem;
 using PdfBuilder.Service.Generators;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PdfBuilder.Service
 {
@@ -16,10 +11,10 @@ namespace PdfBuilder.Service
         private readonly AssetLoader _assetLoader;
         private readonly PdfGenerator _pdfGenerator;
 
-        public CVService(AssetLoader assetLoader)
+        public CVService(AssetLoader assetLoader, PdfGenerator generator)
         {
             _assetLoader = assetLoader;
-            _pdfGenerator = new PdfGenerator();
+            _pdfGenerator = generator;
         }
 
         public override Task<AvailableTemplatesResponse> GetAvailableTemplates(Empty request, ServerCallContext context)
@@ -61,7 +56,7 @@ namespace PdfBuilder.Service
             var data = await _pdfGenerator.Generate(new GeneralModel { Content = content, Sidebar = sidebar }, template, theme);
             var response = new GenerateCVResponse();
             response.GeneratedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");
-            response.PdfData = ByteString.CopyFrom(data);
+            response.FileName = data;
             return response;
         }
 

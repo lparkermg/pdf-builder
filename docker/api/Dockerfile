@@ -7,6 +7,7 @@ RUN apk add protobuf protobuf-dev grpc grpc-plugins
 WORKDIR /build
 
 COPY ./src/PdfBuilder.Api/PdfBuilder.Api.csproj ./PdfBuilder.Api/PdfBuilder.Api.csproj
+COPY ./src/PdfBuilder.Common.FileSystem/PdfBuilder.Common.FileSystem.csproj ./PdfBuilder.Common.FileSystem/PdfBuilder.Common.FileSystem.csproj
 
 RUN dotnet restore ./PdfBuilder.Api/PdfBuilder.Api.csproj
 

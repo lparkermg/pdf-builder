@@ -29,6 +29,10 @@
     <PackageReference Include="PuppeteerSharp" Version="20.1.2" />
     <PackageReference Include="RazorEngineCore" Version="2024.4.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PdfBuilder.Common.FileSystem\PdfBuilder.Common.FileSystem.csproj" />
+  </ItemGroup>
   <ItemGroup>
 	<Protobuf Include="..\cv.proto" />
   </ItemGroup>

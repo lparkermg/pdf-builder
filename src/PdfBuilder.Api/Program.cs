@@ -1,9 +1,17 @@
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using PdfBuilder.Api.Configuration;
 using PdfBuilder.Api.Models.Request;
-using System.Net.Http.Headers;
+using PdfBuilder.Common.FileSystem;
+using PdfBuilder.Common.FileSystem.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddEnvironmentVariables("PDFBUILDER_API_");
+builder.Services.Configure<LocalFileSystemOptions>(builder.Configuration.GetSection("Settings:Files:Local"));
+builder.Services.Configure<ApiOptions>(builder.Configuration.GetSection("Settings"));
+
+builder.Services.AddScoped<IFileSystem, LocalFileSystem>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -54,27 +62,27 @@ if (app.Environment.IsDevelopment())
 
 //app.UseHttpsRedirection();
 
-app.MapGet("/themes", () =>
+app.MapGet("/themes", (IOptions<ApiOptions> apiOps) =>
 {
-    var channel = setupChannel(new Uri("https://pdfbuilder-builder:5001"));
+    var channel = setupChannel(apiOps.Value.ServiceUri);
     var client = new CV.CVClient(channel);
     return client.GetAvailableThemes(new Google.Protobuf.WellKnownTypes.Empty());
 })
 .WithName("AvailableThemes")
 .WithOpenApi();
 
-app.MapGet("/templates", () =>
+app.MapGet("/templates", (IOptions<ApiOptions> apiOps) =>
 {
-    var channel = setupChannel(new Uri("https://pdfbuilder-builder:5001"));
+    var channel = setupChannel(apiOps.Value.ServiceUri);
     var client = new CV.CVClient(channel);
     return client.GetAvailableTemplates(new Google.Protobuf.WellKnownTypes.Empty());
 })
 .WithName("AvailableTemplates")
 .WithOpenApi();
 
-app.MapPost("/cv", ([FromBody] CvRequest body) =>
+app.MapPost("/cv", ([FromBody] CvRequest body, IOptions<ApiOptions> apiOps) =>
 {
-    var channel = setupChannel(new Uri("https://pdfbuilder-builder:5001"));
+    var channel = setupChannel(apiOps.Value.ServiceUri);
     var client = new CV.CVClient(channel);
     var request = new GenerateCVRequest
     {
@@ -86,7 +94,19 @@ app.MapPost("/cv", ([FromBody] CvRequest body) =>
     request.Content.AddRange(body.Sidebar);
     var data = client.GenerateCV(request);
     
-    return Results.File(data.PdfData.ToByteArray(), "application/pdf", lastModified: DateTime.Parse(data.GeneratedAt));
+    return Results.Created($"/file/{data.FileName}", $"/file/{data.FileName}");
+});
+
+app.MapGet("/file/{fileName}.pdf", (string fileName, IFileSystem fs) =>
+{
+    var success = fs.TryGetFile($"{fileName}.pdf", out var data);
+
+    if (!success)
+    {
+        return Results.NotFound();
+    }
+
+    return Results.File(data, "application/pdf", $"{fileName}.pdf");
 });
 
 app.Run();

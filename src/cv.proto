@@ -16,7 +16,7 @@ message GenerateCVRequest {
 
 message GenerateCVResponse {
 	string generatedAt = 1;
-	bytes pdfData = 2;
+	string fileName = 2;
 }
 
 message Template {
