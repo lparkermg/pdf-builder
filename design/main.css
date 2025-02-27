@@ -1,0 +1,42 @@
+:root {
+    --nav-colour-bkg: #000411;
+    --nav-colour: #AEB7B3;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    display: grid;
+    background-color: var(--content-area-colour-bkg)
+}
+
+nav {
+    background-color: var(--nav-colour-bkg);
+    color: var(--nav-colour);
+    padding-left: 0.25em;
+    padding-right: 0.25em;
+}
+
+section {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+select {
+    background-color: var(--nav-colour-bkg);
+    color: var(--nav-colour);
+    border: 0;
+    border-radius: 0.25em;
+    font-size:16px;
+    width: 100%;
+    padding: 0.5em;
+}
+
+button {
+    font-size: 16px;
+    border-radius: 0.5em;
+    border: 0;
+    padding: 0.5em;
+    transition: background-color 0.5s;
+}

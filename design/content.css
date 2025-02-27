@@ -1,0 +1,63 @@
+:root {
+    --sidebar-colour-bkg: #141E24;
+    --sidebar-colour: #CEE5DC;
+    --content-area-colour-bkg: #364749;
+    --content-area-colour: #CEE5DC;
+    --cancel-btn-colour: #A81F1F;
+    --cancel-btn-colour-hover: #5f1313;
+    --submit-btn-colour: #146E18;
+    --submit-btn-colour-hover: #0a3b0c;
+}
+
+.sidebar {
+    margin: 0.25em;
+    border-radius: 0.5em;
+    background-color: var(--sidebar-colour-bkg);
+    color: var(--sidebar-colour);
+    width:20em;
+    padding: 0.5em;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar > *:not(h1,h2,h3,h4,h5) {
+    margin-bottom: 0.25em;
+}
+
+.content {
+    padding: 1em;
+    background-color: var(--content-area-colour-bkg);
+    color: var(--content-area-colour);
+    flex-grow:1;
+}
+
+.spacer {
+    margin-top: 5em;
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-container > * {
+    margin-bottom: 0.25em;
+}
+
+.btn-submit {
+    color: var(--sidebar-colour);
+    background-color: var(--submit-btn-colour);
+}
+
+.btn-submit:hover {
+    background-color: var(--submit-btn-colour-hover);
+}
+
+.btn-cancel {
+    color: var(--sidebar-colour);
+    background-color: var(--cancel-btn-colour);
+}
+
+.btn-cancel:hover {
+    background-color: var(--cancel-btn-colour-hover);
+}
