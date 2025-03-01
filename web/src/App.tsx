@@ -3,15 +3,15 @@ import './App.css'
 import SelectorSections from './Components/SelectorsSections'
 import { TemplateResponse, ThemeResponse } from '../models/api'
 import * as api from '../api/api';
-import ContentSections from './Components/ContentSections'
+import ContentSections from './Components/Generic/ContentSections'
 import DownloadLink from './Components/DownloadLink';
+import Nav from './Components/Generic/Nav';
+import CvSidebar from './Components/CvBuilder/CvSidebar';
+import CvContentArea from './Components/CvBuilder/CvContentArea';
 
 function App() {
   const [themes, setThemes] = useState<ThemeResponse>({themes:[]})
   const [templates, setTemplates] = useState<TemplateResponse>({templates: []})
-
-  const [selectedTemplate, setSelectedTemplate] = useState<number>(0)
-  const [selectedTheme, setSelectedTheme] = useState<number>(0)
 
   const [content, setContent] = useState<string[]>([])
   const [sidebar, setSidebar] = useState<string[]>([])
@@ -33,14 +33,6 @@ function App() {
     } catch (error){
       console.error({error, err:"failed"});
     }
-  }
-
-  function onTemplateSelected(id: number){
-    setSelectedTemplate(id)
-  }
-
-  function onThemeSelected(id: number){
-    setSelectedTheme(id)
   }
 
   function addNewContentSection(){
@@ -67,8 +59,8 @@ function App() {
     setSidebar(sidebarClone);
   }
 
-  async function onDataSubmit(){
-    const data = await api.postCv({ template: selectedTemplate, theme: selectedTheme, content: content, sidebar: sidebar});
+  async function generateCv(template: number, theme: number){
+    const data = await api.postCv({ template, theme, content: content, sidebar: sidebar});
 
     if (data){
       setPdfLink(data);
@@ -78,17 +70,11 @@ function App() {
 
   return (
     <>
-      <div>
-        <SelectorSections themes={themes} templates={templates} onThemeSelected={onThemeSelected} onTemplateSelected={onTemplateSelected} />
-        <ContentSections title="Content" content={content} onContentChanged={updateContentSection} onNewSectionAdded={addNewContentSection} />
-        <ContentSections title="Sidebar" content={sidebar} onContentChanged={updateSidebarSection} onNewSectionAdded={addNewSidebarSection} />
-      </div>
-      <div className="card">
-        <button onClick={onDataSubmit}>
-          Submit Data
-        </button>
-      </div>
-      {hasGenerated && <DownloadLink uri={pdfLink} display="Click here to download your PDF" />}
+      <Nav />
+      <section>
+        <CvSidebar title="CV Settings" templates={templates.templates} themes={themes.themes} onSubmit={(template, theme) => generateCv(template, theme)} />
+        <CvContentArea />
+      </section>
 
     </>
   )

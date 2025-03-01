@@ -12,8 +12,10 @@ function ContentSections({title, content, onContentChanged,onNewSectionAdded}: C
     );
 
     return <section>
-        <h1>{title}</h1>
-        <button onClick={onNewSectionAdded}>+</button>
+        <div className="section-header">
+            <h2>{title}</h2>
+            <button onClick={onNewSectionAdded}>+</button>
+        </div>
         {mappedContent}
     </section>
 }

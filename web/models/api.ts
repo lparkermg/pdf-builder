@@ -5,7 +5,7 @@ export interface CvRequest {
     sidebar: string[];
 }
 
-interface DataPair {
+export interface DataPair {
     id: number;
     name: string;
 }

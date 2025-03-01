@@ -1,7 +1,8 @@
 import { ThemeResponse, TemplateResponse, CvRequest} from '../models/api';
+import { API_BASE_URI } from '../src/consts'
 
 export async function getThemes(): Promise<ThemeResponse> {
-    const resp = await fetch("http://localhost:5117/themes")
+    const resp = await fetch(`${API_BASE_URI}/themes`)
 
     if (!resp.ok){
         throw new Error(resp.statusText);
@@ -11,7 +12,7 @@ export async function getThemes(): Promise<ThemeResponse> {
 }
 
 export async function getTemplates(): Promise<TemplateResponse> {
-    const resp = await fetch("http://localhost:5117/templates");
+    const resp = await fetch(`${API_BASE_URI}/templates`);
 
     if (!resp.ok){
         throw new Error(resp.statusText);
@@ -21,7 +22,7 @@ export async function getTemplates(): Promise<TemplateResponse> {
 }
 
 export async function postCv(request: CvRequest): Promise<string | null>{
-    const resp = await fetch("http://localhost:5117/cv", {
+    const resp = await fetch(`${API_BASE_URI}/cv`, {
         method: 'POST',
         body: JSON.stringify(request),
         headers: {
@@ -29,5 +30,5 @@ export async function postCv(request: CvRequest): Promise<string | null>{
         }
     });
 
-    return "http://localhost:5117" + (await resp.text()).replace('"', '').replace('"','')
+    return `${API_BASE_URI}` + (await resp.text()).replace('"', '').replace('"','')
 }
