@@ -11,7 +11,6 @@ function CvBuilder(){
     const [content, setContent] = useState<string[]>([])
     const [sidebar, setSidebar] = useState<string[]>([])
 
-    const [hasGenerated, setHasGenerated] = useState<boolean>(false);
     const [pdfLink, setPdfLink] = useState<string>("")
 
     useEffect(() => {
@@ -42,6 +41,12 @@ function CvBuilder(){
         setContent(contentClone);
     }
 
+    function removeContentSection(index: number){
+        const contentClone = [...content];
+        contentClone.splice(index);
+        setContent(contentClone);
+    }
+
     function addNewSidebarSection(){
         const sidebarClone = [...sidebar];
         sidebarClone.push("");
@@ -54,18 +59,32 @@ function CvBuilder(){
         setSidebar(sidebarClone);
     }
 
+    function removeSidebarSection(index: number){
+        const sidebarClone = [...sidebar];
+        sidebarClone.splice(index);
+        setSidebar(sidebarClone);
+    }
+
     async function generateCv(template: number, theme: number){
         const data = await api.postCv({ template, theme, content: content, sidebar: sidebar});
 
         if (data){
             setPdfLink(data);
-            setHasGenerated(true);
         }
     }
     return(
     <section>
         <CvSidebar title="CV Settings" templates={templates.templates} themes={themes.themes} onSubmit={(template, theme) => generateCv(template, theme)} />
-        <CvContentArea />
+        <CvContentArea 
+            pdfLink={pdfLink}
+            mainSections={content}
+            onMainSectionAdded={addNewContentSection}
+            onMainSectionUpdated={updateContentSection}
+            onMainSectionRemoved={removeContentSection}
+            sidebarSections={sidebar}
+            onSidebarSectionAdded={addNewSidebarSection}
+            onSidebarSectionUpdated={updateSidebarSection}
+            onSidebarSectionRemoved={removeSidebarSection} />
     </section>
     )
 }

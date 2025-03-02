@@ -18,6 +18,7 @@
   padding: 0.5em;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 .sidebar > *:not(h1,h2,h3,h4,h5) {
@@ -33,6 +34,37 @@
 
 .spacer {
   margin-top: 5em;
+}
+
+.content-section {
+  margin-bottom: 0.5em;
+}
+
+.content-section > div > textarea {
+  border: 0;
+  border-radius: 8px;
+  height: 8em;
+  resize:none;
+}
+
+.content-entry {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5em;
+}
+
+.content-entry > button {
+  margin-bottom: 0.25em;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-header > h2 {
+  margin: 0;
 }
 
 .btn-container {

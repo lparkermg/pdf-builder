@@ -16,7 +16,9 @@ function CvSidebar({ title, templates, themes, onSubmit }: CvSidebarProps){
     const mappedThemes = themes.map((v) => <option value={v.id}>{v.name}</option>)
     return (
     <div className="sidebar">
+        <div className="top">
          <h2>{title}</h2>
+         
          <label htmlFor="templates-select">
             <span>Template</span>
             <select name="templates-select" defaultValue="0" onChange={e => setSelectedTemplate(Number(e.target.value))}>
@@ -29,11 +31,12 @@ function CvSidebar({ title, templates, themes, onSubmit }: CvSidebarProps){
                 {mappedThemes}
             </select>
          </label>
-         <div className="spacer" />
-         <div className="btn-container">
+        </div>
+        <div className="spacer" />
+        <div className="btn-container">
             <button className="btn-cancel">Reset</button>
             <button className="btn-submit" onClick={() => onSubmit(selectedTemplate, selectedTheme)}>Generate</button>
-         </div>
+        </div>
     </div>);
 }
 
