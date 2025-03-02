@@ -43,8 +43,8 @@ function CvBuilder(){
 
     function removeContentSection(index: number){
         const contentClone = [...content];
-        contentClone.splice(index);
-        setContent(contentClone);
+        const contentRemoved = contentClone.filter((_, i) => i !== index);
+        setContent(contentRemoved);
     }
 
     function addNewSidebarSection(){
@@ -61,8 +61,8 @@ function CvBuilder(){
 
     function removeSidebarSection(index: number){
         const sidebarClone = [...sidebar];
-        sidebarClone.splice(index);
-        setSidebar(sidebarClone);
+        const sidebarRemoved = sidebarClone.filter((_, i) => i !== index);
+        setSidebar(sidebarRemoved);
     }
 
     async function generateCv(template: number, theme: number){
