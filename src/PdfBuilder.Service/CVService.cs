@@ -49,10 +49,13 @@ namespace PdfBuilder.Service
 
         public override async Task<GenerateCVResponse> GenerateCV(GenerateCVRequest request, ServerCallContext context)
         {
+            var pipelineBuilder = new MarkdownPipelineBuilder();
+            pipelineBuilder.UseGridTables();
+            pipelineBuilder.UseAutoLinks();
             var template = _assetLoader.LoadTemplate(request.Template);
             var theme = _assetLoader.LoadTheme(request.Theme);
-            var content = request.Content.Select(v => Markdown.ToHtml(v)).ToArray();
-            var sidebar = request.Content.Select(v => Markdown.ToHtml(v)).ToArray();
+            var content = request.Content.Select(v => $"<article>{Markdown.ToHtml(v, pipelineBuilder.Build())}</article>").ToArray();
+            var sidebar = request.Sidebar.Select(v => $"<article>{Markdown.ToHtml(v, pipelineBuilder.Build())}</article>").ToArray();
             var data = await _pdfGenerator.Generate(new GeneralModel { Content = content, Sidebar = sidebar }, template, theme);
             var response = new GenerateCVResponse();
             response.GeneratedAt = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss");

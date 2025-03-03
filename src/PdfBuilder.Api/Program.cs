@@ -91,7 +91,7 @@ app.MapPost("/cv", ([FromBody] CvRequest body, IOptions<ApiOptions> apiOps) =>
     };
 
     request.Content.AddRange(body.Content);
-    request.Content.AddRange(body.Sidebar);
+    request.Sidebar.AddRange(body.Sidebar);
     var data = client.GenerateCV(request);
     
     return Results.Created($"/file/{data.FileName}", $"/file/{data.FileName}");

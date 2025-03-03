@@ -14,7 +14,6 @@ namespace PdfBuilder.Service.Generators
             var template = await razorEngine.CompileAsync<RazorEngineTemplateBase<GeneralModel>>(templateData);
             var html = await template.RunAsync(i => i.Model = model);
             html = html.Replace("csstheme/file", themeData);
-
             var browserFetcher = new BrowserFetcher();
             await browserFetcher.DownloadAsync();
             // TODO: Change this up to keep the browser running, while the service is running and only handle pages in this section of the code.
@@ -24,8 +23,7 @@ namespace PdfBuilder.Service.Generators
             await page.SetContentAsync(html);
             await page.EvaluateExpressionHandleAsync("document.fonts.ready"); // Wait for fonts to be loaded. Omitting this might result in no text rendered in pdf.
             var filePath = $"{Guid.NewGuid()}.pdf";
-
-            var data = await page.PdfDataAsync(new PdfOptions { PrintBackground = true, });
+            var data = await page.PdfDataAsync(new PdfOptions { PrintBackground = true });
             if(!await _fs.SaveFile(filePath, data))
             {
                 await browser.CloseAsync();

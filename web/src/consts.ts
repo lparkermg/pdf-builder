@@ -1,1 +1,1 @@
-export const API_BASE_URI = import.meta.env.PDFBUILDER_WEB_SETTINGS__API__BaseUri ?? "http://localhost:8080"
+export const API_BASE_URI = "http://localhost:5117"
