@@ -1,4 +1,5 @@
 using Grpc.Net.Client;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using PdfBuilder.Api.Configuration;
@@ -95,6 +96,42 @@ app.MapPost("/cv", ([FromBody] CvRequest body, IOptions<ApiOptions> apiOps) =>
     var data = client.GenerateCV(request);
     
     return Results.Created($"/file/{data.FileName}", $"/file/{data.FileName}");
+});
+
+app.MapGet("/saves/metadata", (IOptions<ApiOptions> apiOps) =>
+{
+    var channel = setupChannel(apiOps.Value.SaveServiceUri);
+    var client = new Load.LoadClient(channel);
+    var data = client.LoadMetadata(new Google.Protobuf.WellKnownTypes.Empty());
+    // TODO: Change to the actual data model.
+    return Results.Ok(data.Metadata);
+});
+
+app.MapPost("/saves/new", async ([FromBody] string data, IOptions<ApiOptions> apiOps) =>
+{
+    var channel = setupChannel(apiOps.Value.SaveServiceUri);
+    var client = new Save.SaveClient(channel);
+    var resp = await client.SaveAsync(new SaveRequest { Content = data, Title = "title" });
+    return Results.Ok(resp.Id);
+});
+
+app.MapPatch("/saves/update", async ([FromBody] string data, IOptions<ApiOptions> apiOps) =>
+{
+    var channel = setupChannel(apiOps.Value.SaveServiceUri);
+    var client = new Save.SaveClient(channel);
+    var resp = await client.SaveAsync(new SaveRequest { Content = data, Title = "title", Id = "id" });
+
+    return Results.Ok(resp.Id);
+});
+
+app.MapGet("/saves", async ([FromQuery] string id, IOptions<ApiOptions> apiOps) =>
+{
+    var channel = setupChannel(apiOps.Value.SaveServiceUri);
+    var client = new Load.LoadClient(channel);
+    var data = await client.LoadAsync(new LoadRequest { Id = id });
+
+    // TODO: Change to the actual data model.
+    return Results.Ok(data);
 });
 
 app.MapGet("/file/{fileName}.pdf", (string fileName, IFileSystem fs) =>

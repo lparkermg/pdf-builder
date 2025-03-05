@@ -20,5 +20,6 @@
   </ItemGroup>
   <ItemGroup>
 	<Protobuf Include="..\cv.proto" />
+	<Protobuf Include="..\save.proto" />
   </ItemGroup>
 </Project>

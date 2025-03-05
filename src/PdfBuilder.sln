@@ -10,9 +10,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contracts", "Contracts", "{F653D705-F030-4241-9409-3E678BA5925D}"
 	ProjectSection(SolutionItems) = preProject
 		cv.proto = cv.proto
+		save.proto = save.proto
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfBuilder.Common.FileSystem", "PdfBuilder.Common.FileSystem\PdfBuilder.Common.FileSystem.csproj", "{63B18EBF-8102-4295-B08A-EF6873582B67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfBuilder.SaveService", "PdfBuilder.SaveService\PdfBuilder.SaveService.csproj", "{A1C61775-6E73-4C53-870A-0880DAAE2188}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfBuilder.Common.Models", "PdfBuilder.Common.Models\PdfBuilder.Common.Models.csproj", "{20F7AEB5-AA69-4CBE-A2CE-F459170932EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +37,14 @@ Global
 		{63B18EBF-8102-4295-B08A-EF6873582B67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63B18EBF-8102-4295-B08A-EF6873582B67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63B18EBF-8102-4295-B08A-EF6873582B67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1C61775-6E73-4C53-870A-0880DAAE2188}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1C61775-6E73-4C53-870A-0880DAAE2188}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1C61775-6E73-4C53-870A-0880DAAE2188}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1C61775-6E73-4C53-870A-0880DAAE2188}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20F7AEB5-AA69-4CBE-A2CE-F459170932EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20F7AEB5-AA69-4CBE-A2CE-F459170932EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20F7AEB5-AA69-4CBE-A2CE-F459170932EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20F7AEB5-AA69-4CBE-A2CE-F459170932EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
