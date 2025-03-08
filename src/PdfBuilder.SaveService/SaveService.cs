@@ -32,9 +32,9 @@ namespace PdfBuilder.SaveService
 
             if (_fs.TryGetFile("metadata.meta", out var metaData))
             {
-                var data = JsonSerializer.Deserialize<IList<MetadataItem>>(Encoding.UTF8.GetString(metaData));
+                var data = JsonSerializer.Deserialize<IList<MetadataItem>>(Encoding.UTF8.GetString(metaData)) ?? [];
 
-                if (data != null && data.Any(d => d.Id.Equals(id.ToString(), StringComparison.CurrentCultureIgnoreCase)))
+                if (data.Any(d => d.Id.Equals(id.ToString(), StringComparison.CurrentCultureIgnoreCase)))
                 {
                     var dataItem = data.Single(d => d.Id.Equals(id.ToString(), StringComparison.CurrentCultureIgnoreCase));
                     dataItem.LastModifiedAt = DateTime.UtcNow;
@@ -50,6 +50,18 @@ namespace PdfBuilder.SaveService
                 }
 
                 await _fs.SaveFile("metadata.meta", Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data)));
+            }
+            else
+            {
+                await _fs.SaveFile("metadata.meta", Encoding.UTF8.GetBytes(JsonSerializer.Serialize(new List<MetadataItem>
+                {
+                    new MetadataItem
+                    {
+                        Id = id.ToString(),
+                        Title = request.Title,
+                        LastModifiedAt = DateTime.UtcNow,
+                    }
+                })));
             }
 
             response.Id = id.ToString();

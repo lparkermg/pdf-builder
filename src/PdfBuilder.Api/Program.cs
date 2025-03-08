@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using PdfBuilder.Api.Configuration;
 using PdfBuilder.Api.Models.Request;
+using PdfBuilder.Api.Models.Response;
 using PdfBuilder.Common.FileSystem;
 using PdfBuilder.Common.FileSystem.Configuration;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables("PDFBUILDER_API_");
@@ -103,23 +105,29 @@ app.MapGet("/saves/metadata", (IOptions<ApiOptions> apiOps) =>
     var channel = setupChannel(apiOps.Value.SaveServiceUri);
     var client = new Load.LoadClient(channel);
     var data = client.LoadMetadata(new Google.Protobuf.WellKnownTypes.Empty());
-    // TODO: Change to the actual data model.
+
+    var model = new MetadataResponse
+    {
+        Metadata = JsonSerializer.Deserialize<IList<MetadataItemResponse>>(data.Metadata) ?? []
+    };
+
     return Results.Ok(data.Metadata);
 });
 
-app.MapPost("/saves/new", async ([FromBody] string data, IOptions<ApiOptions> apiOps) =>
+app.MapPost("/saves/new", async ([FromBody] NewMetadataRequest data, IOptions<ApiOptions> apiOps) =>
 {
     var channel = setupChannel(apiOps.Value.SaveServiceUri);
     var client = new Save.SaveClient(channel);
-    var resp = await client.SaveAsync(new SaveRequest { Content = data, Title = "title" });
+    var resp = await client.SaveAsync(new SaveRequest { Content = data.Content, Title = data.Title });
+
     return Results.Ok(resp.Id);
 });
 
-app.MapPatch("/saves/update", async ([FromBody] string data, IOptions<ApiOptions> apiOps) =>
+app.MapPatch("/saves/update", async ([FromBody] UpdateMetadataRequest data, IOptions<ApiOptions> apiOps) =>
 {
     var channel = setupChannel(apiOps.Value.SaveServiceUri);
     var client = new Save.SaveClient(channel);
-    var resp = await client.SaveAsync(new SaveRequest { Content = data, Title = "title", Id = "id" });
+    var resp = await client.SaveAsync(new SaveRequest { Content = data.Content, Title = data.Title, Id = data.Id });
 
     return Results.Ok(resp.Id);
 });
@@ -130,7 +138,6 @@ app.MapGet("/saves", async ([FromQuery] string id, IOptions<ApiOptions> apiOps) 
     var client = new Load.LoadClient(channel);
     var data = await client.LoadAsync(new LoadRequest { Id = id });
 
-    // TODO: Change to the actual data model.
     return Results.Ok(data);
 });
 

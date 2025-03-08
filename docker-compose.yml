@@ -10,6 +10,7 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - PDFBUILDER_API_Settings__Files__Local__BasePath=/data
       - PDFBUILDER_API_Settings__ServiceUri=https://pdfbuilder-builder:5001
+      - PDFBUILDER_API_SETTINGS__SaveServiceUri=https://pdfbuilder-saver:5002
     ports:
       - "5117:5117"
     volumes:
@@ -37,6 +38,22 @@ services:
     networks:
       pdfbuilder_net:
   
+  pdfbuilder-saver:
+    build:
+      context: .
+      dockerfile: ./docker/save/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:5002
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=pAs5w0rd
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - PDFBUILDER_SERVICE_Settings__Files__Local__BasePath=/data
+    volumes:
+      - ${USERPROFILE}\.aspnet\https:/https/:ro
+      - pdf_data:/data:rw
+    networks:
+      pdfbuilder_net:
+
   pdfbuilder-web:
     build:
       context: .
