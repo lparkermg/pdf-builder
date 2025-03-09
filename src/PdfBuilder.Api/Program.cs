@@ -111,7 +111,7 @@ app.MapGet("/saves/metadata", (IOptions<ApiOptions> apiOps) =>
         Metadata = JsonSerializer.Deserialize<IList<MetadataItemResponse>>(data.Metadata) ?? []
     };
 
-    return Results.Ok(data.Metadata);
+    return Results.Ok(model);
 });
 
 app.MapPost("/saves/new", async ([FromBody] NewMetadataRequest data, IOptions<ApiOptions> apiOps) =>
