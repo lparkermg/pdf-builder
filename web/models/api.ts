@@ -17,3 +17,26 @@ export interface ThemeResponse {
 export interface TemplateResponse {
     templates: DataPair[];
 }
+
+
+export interface MetadataResponse {
+    metadata: MetadataItemResponse[];
+}
+
+export interface MetadataItemResponse {
+    id: string;
+    title: string;
+    lastModifiedAt: Date;
+}
+
+export interface UnparsedLoadResponse {
+    id: string;
+    content: string;
+}
+
+export interface CvDocument {
+    template: number;
+    theme: number;
+    content: string[];
+    sidebar: string[];
+}
