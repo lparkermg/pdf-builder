@@ -51,7 +51,7 @@ function App() {
   async function loadMetadata(){
     try{
       const data = await api.loadMetadata();
-      setMetadata([{id: "", title: "", lastModifiedAt: new Date() },...data.metadata])
+      setMetadata([{id: "new", title: "", lastModifiedAt: new Date() },...data.metadata])
     }
     catch(err: any)
     {
