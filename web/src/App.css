@@ -9,6 +9,7 @@
   --submit-btn-colour-hover: #0a3b0c;
 
   --error-nav-colour-bkg: #3a0000;
+  --error-nav-colour: #d8b2b2;
   --success-nav-colour-bkg: #003a05;
 }
 
@@ -113,6 +114,12 @@
   padding: 1em;
   background-color: var(--error-nav-colour-bkg);
   border-radius: 8px;
+}
+
+.error-message {
+  color: var(--error-nav-colour);
+  margin-top:auto;
+  margin-bottom: auto;
 }
 
 .success {

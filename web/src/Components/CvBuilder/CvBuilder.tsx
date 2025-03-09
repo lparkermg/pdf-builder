@@ -1,32 +1,33 @@
 import { useEffect, useState } from "react"
-import { ThemeResponse, TemplateResponse } from "../../../models/api"
+import { ThemeResponse, TemplateResponse, CvDocument } from "../../../models/api"
 import * as api from '../../../api/api';
 import CvSidebar from "./CvSidebar";
 import CvContentArea from "./CvContentArea";
 
 interface CvBuilderProps{
-    id: string | null | undefined;
+    id: string;
+    doc: CvDocument;
 }
 
-function CvBuilder({id}: CvBuilderProps){
-    const [docId, setDocId] = useState<string>(id ?? "")
+function CvBuilder({id, doc}: CvBuilderProps){
+    const [docId, setDocId] = useState<string>(id)
     const [title, setTitle] = useState<string>("")
 
-    const [selectedTemplate, setSelectedTemplate] = useState<number>(0)
-    const [selectedTheme, setSelectedTheme] = useState<number>(0)
+    const [selectedTemplate, setSelectedTemplate] = useState<number>(doc.template)
+    const [selectedTheme, setSelectedTheme] = useState<number>(doc.theme)
 
     const [themes, setThemes] = useState<ThemeResponse>({themes:[]})
     const [templates, setTemplates] = useState<TemplateResponse>({templates: []})
 
-    const [content, setContent] = useState<string[]>([])
-    const [sidebar, setSidebar] = useState<string[]>([])
+    const [content, setContent] = useState<string[]>(doc.content)
+    const [sidebar, setSidebar] = useState<string[]>(doc.sidebar)
 
     const [pdfLink, setPdfLink] = useState<string>("")
 
     const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
-    fetchAvailableDetails();
+        fetchAvailableDetails();
     }, [])
 
     async function fetchAvailableDetails(){
@@ -36,8 +37,8 @@ function CvBuilder({id}: CvBuilderProps){
 
             setThemes(themeRes);
             setTemplates(templateRes);
-        } catch (error){
-            console.error({error, err:"failed"});
+        } catch (err: any){
+            setError(`Failed to save CV: ${err.message}`)
         }
     }
 
@@ -86,7 +87,7 @@ function CvBuilder({id}: CvBuilderProps){
             }
         }
         catch(err: any){
-            setError(err.message)
+            setError(`Failed to generate CV: ${err.message}`)
         }
     }
 
@@ -103,7 +104,7 @@ function CvBuilder({id}: CvBuilderProps){
             }
         }
         catch(err: any){
-            setError(err.message)
+            setError(`Failed to save CV: ${err.message}`)
         }
     }
     return(

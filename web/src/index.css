@@ -30,6 +30,11 @@ nav {
   display: flex;
 }
 
+header > nav {
+  align-content: center;
+  justify-content: space-between;
+}
+
 section {
   display: flex;
   flex-direction: row;
