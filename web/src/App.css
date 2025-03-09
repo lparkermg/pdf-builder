@@ -7,6 +7,9 @@
   --cancel-btn-colour-hover: #5f1313;
   --submit-btn-colour: #146E18;
   --submit-btn-colour-hover: #0a3b0c;
+
+  --error-nav-colour-bkg: #3a0000;
+  --success-nav-colour-bkg: #003a05;
 }
 
 .sidebar {
@@ -92,4 +95,28 @@
 
 .btn-cancel:hover {
   background-color: var(--cancel-btn-colour-hover);
+}
+
+.toolbar {
+  align-content: center;
+  justify-content: space-between;
+  padding: 0.5em;
+  border-radius: 8px;
+  margin-bottom: 0.25em;
+}
+
+.toolbar > label > span {
+  margin-right: 0.25em
+}
+
+.error {
+  padding: 1em;
+  background-color: var(--error-nav-colour-bkg);
+  border-radius: 8px;
+}
+
+.success {
+  padding: 1em;
+  background-color: var(--success-nav-colour-bkg);
+  border-radius: 8px;
 }

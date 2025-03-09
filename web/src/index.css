@@ -27,7 +27,7 @@ nav {
   color: var(--nav-colour);
   padding-left: 0.25em;
   padding-right: 0.25em;
-  display: grid;
+  display: flex;
 }
 
 section {
@@ -52,4 +52,13 @@ button {
   border: 0;
   padding: 0.5em;
   transition: background-color 0.5s;
+}
+
+input {
+  border: 0;
+  border-radius: 8px;
+  height: 3em;
+  resize:none;
+  padding-left:1em;
+  padding-right: 1em;
 }
