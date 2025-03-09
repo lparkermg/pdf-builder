@@ -62,7 +62,7 @@ export async function saveNew(content: CvDocument, title: string): Promise<strin
 export async function saveUpdate(id: string, title: string, content: CvDocument){
     const resp = await fetch(`${API_BASE_URI}/saves/update`,
         {
-            method: 'POST',
+            method: 'PATCH',
             body: JSON.stringify({ id, content, title }),
             headers: {
                 'Content-Type': 'application/json'
