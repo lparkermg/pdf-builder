@@ -118,7 +118,7 @@ app.MapPost("/saves/new", async ([FromBody] NewMetadataRequest data, IOptions<Ap
 {
     var channel = setupChannel(apiOps.Value.SaveServiceUri);
     var client = new Save.SaveClient(channel);
-    var resp = await client.SaveAsync(new SaveRequest { Content = data.Content, Title = data.Title });
+    var resp = await client.SaveAsync(new SaveRequest { Content = data.Content.ToJsonString(), Title = data.Title });
 
     return Results.Ok(resp.Id);
 });
