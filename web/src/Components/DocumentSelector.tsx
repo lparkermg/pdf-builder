@@ -29,7 +29,7 @@ function DocumentSelector({metadata, onNewDocument, onDocumentSelected}: Documen
     })
 
     return <section>
-
+        {items}
     </section>
 }
 
