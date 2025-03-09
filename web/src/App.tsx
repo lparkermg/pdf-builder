@@ -40,6 +40,7 @@ function App() {
       const doc = await api.load(docId)
 
       setLoadedDoc(doc)
+      setId(docId)
       setDocLoaded(true)
     }
     catch(err: any){
