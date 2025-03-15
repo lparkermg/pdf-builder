@@ -127,3 +127,37 @@
   background-color: var(--success-nav-colour-bkg);
   border-radius: 8px;
 }
+
+.doc-btn {
+  display: grid;
+  height: 248px;
+  width: 248px;
+  justify-items: center;
+  align-items: center;
+  margin: 0.25em;
+  border-radius: 18px;
+}
+
+.doc-btn > div{
+  border-radius: 18px;
+  border: 0.3em dashed black;
+  height: 90%;
+  width:95%;
+}
+
+.doc-btn-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 1em;
+  align-items: center;
+ }
+
+.new-doc-btn-content {
+  justify-content: center !important;
+ }
+
+.new-doc-btn-content > span {
+  font-size:6em;
+  font-weight: 700;
+}

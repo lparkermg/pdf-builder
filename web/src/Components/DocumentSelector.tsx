@@ -10,16 +10,17 @@ function DocumentSelector({metadata, onNewDocument, onDocumentSelected}: Documen
     
     const items = metadata.map((v) => {
         if(v.id === "new"){
-            return <button onClick={onNewDocument}>
-                <span>+</span>
+            return <button className="doc-btn" onClick={onNewDocument}>
+                <div className="doc-btn-content new-doc-btn-content">
+                    <span>+</span>
+                </div>
             </button>
         }
         else{
-            return <button onClick={() => onDocumentSelected(v.id)}>
-                <div>
+            return <button className="doc-btn" onClick={() => onDocumentSelected(v.id)}>
+                <div className="doc-btn-content">
                     <h3>{v.title}</h3>
                     <div>
-                        <span>Last Updated</span>
                         <span>{v.lastModifiedAt.toLocaleString()}</span>
                     </div>
                     
