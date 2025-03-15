@@ -1,0 +1,12 @@
+[
+    {
+        "id": 0,
+        "name": "Default",
+        "path": "/assets/templates/Default.cshtml"
+    },
+    {
+        "id": 1,
+        "name": "Sidebar",
+        "path": "/assets/templates/Sidebar.cshtml"
+    }
+]

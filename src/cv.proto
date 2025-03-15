@@ -1,0 +1,39 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+
+service CV {
+	rpc GenerateCV(GenerateCVRequest) returns (GenerateCVResponse);
+	rpc GetAvailableTemplates(google.protobuf.Empty) returns (AvailableTemplatesResponse);
+	rpc GetAvailableThemes(google.protobuf.Empty) returns (AvailableThemesResponse);
+}
+
+message GenerateCVRequest {
+	int32 template = 1;
+	int32 theme = 2;
+	repeated string sidebar = 3;
+	repeated string content = 4;
+}
+
+message GenerateCVResponse {
+	string generatedAt = 1;
+	string fileName = 2;
+}
+
+message Template {
+	int32 id = 1;
+	string name = 2;
+}
+
+message AvailableTemplatesResponse {
+	repeated Template templates = 1;
+}
+
+message Theme {
+	int32 id = 1;
+	string name = 2;
+}
+
+message AvailableThemesResponse {
+	
+	repeated Theme themes = 1;
+}

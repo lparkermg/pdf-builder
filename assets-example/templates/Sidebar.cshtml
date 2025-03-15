@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        csstheme/file
+    </style>
+</head>
+    <body>
+        <section>
+        @foreach(var content in @Model.Sidebar)
+        {
+            @content
+        }
+        </section>
+        <section>
+        @foreach(var content in @Model.Content)
+        {
+            @content;
+        }
+        </section>
+    </body>
+</html>

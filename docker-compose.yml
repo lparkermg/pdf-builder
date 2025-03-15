@@ -1,0 +1,70 @@
+services:
+  pdfbuilder-api:
+    build:
+      context: .
+      dockerfile: ./docker/api/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5117
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=pAs5w0rd
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - PDFBUILDER_API_Settings__Files__Local__BasePath=/data
+      - PDFBUILDER_API_Settings__ServiceUri=https://pdfbuilder-builder:5001
+      - PDFBUILDER_API_SETTINGS__SaveServiceUri=https://pdfbuilder-saver:5002
+    ports:
+      - "5117:5117"
+    volumes:
+      - ${USERPROFILE}\.aspnet\https:/https/:ro
+      - pdf_data:/data:ro
+    networks:
+      pdfbuilder_net:
+
+  pdfbuilder-builder:
+    build:
+      context: .
+      dockerfile: ./docker/builder/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:5001
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=pAs5w0rd
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - PDFBUILDER_SERVICE_Assets__TemplatesManifest=/assets/manifests/templates.json
+      - PDFBUILDER_SERVICE_Assets__ThemesManifest=/assets/manifests/themes.json
+      - PDFBUILDER_SERVICE_Settings__Files__Local__BasePath=/data
+    volumes:
+      - ${USERPROFILE}\.aspnet\https:/https/:ro
+      - .\assets-example:/assets/:ro
+      - pdf_data:/data:rw
+    networks:
+      pdfbuilder_net:
+  
+  pdfbuilder-saver:
+    build:
+      context: .
+      dockerfile: ./docker/save/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:5002
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=pAs5w0rd
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - PDFBUILDER_SERVICE_Settings__Files__Local__BasePath=/data
+    volumes:
+      - ${USERPROFILE}\.aspnet\https:/https/:ro
+      - pdf_data:/data:rw
+    networks:
+      pdfbuilder_net:
+
+  pdfbuilder-web:
+    build:
+      context: .
+      dockerfile: ./docker/web/Dockerfile
+    ports:
+      - "5118:80"
+    networks:
+      pdfbuilder_net:
+      
+networks:
+  pdfbuilder_net:
+
+volumes:
+  pdf_data:
