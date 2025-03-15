@@ -21,7 +21,7 @@ function DocumentSelector({metadata, onNewDocument, onDocumentSelected}: Documen
                 <div className="doc-btn-content">
                     <h3>{v.title}</h3>
                     <div>
-                        <span>{v.lastModifiedAt.toLocaleString()}</span>
+                        <span>{v.lastModifiedAt.toDateString()}</span>
                     </div>
                     
                 </div>
