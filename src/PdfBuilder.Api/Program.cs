@@ -127,7 +127,7 @@ app.MapPatch("/saves/update", async ([FromBody] UpdateMetadataRequest data, IOpt
 {
     var channel = setupChannel(apiOps.Value.SaveServiceUri);
     var client = new Save.SaveClient(channel);
-    var resp = await client.SaveAsync(new SaveRequest { Content = data.Content, Title = data.Title, Id = data.Id });
+    var resp = await client.SaveAsync(new SaveRequest { Content = data.Content.ToJsonString(), Title = data.Title, Id = data.Id });
 
     return Results.Ok(resp.Id);
 });

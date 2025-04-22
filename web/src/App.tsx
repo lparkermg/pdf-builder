@@ -9,6 +9,7 @@ import DocumentSelector from './Components/DocumentSelector';
 function App() {
   const [metadata, setMetadata] = useState<MetadataItemResponse[]>([])
 
+  const [loadedTitle, setLoadedTitle] = useState<string>("");
   const [id, setId] = useState<string>("")
   const [loadedDoc, setLoadedDoc] = useState<CvDocument>({
     template: 0,
@@ -32,15 +33,17 @@ function App() {
       content: [],
       sidebar: [],
     })
+    setLoadedTitle("")
     setDocLoaded(true)
   }
 
-  async function loadDocument(docId: string){
+  async function loadDocument(docId: string, docTitle: string){
     try{
       const doc = await api.load(docId)
 
       setLoadedDoc(doc)
       setId(docId)
+      setLoadedTitle(docTitle)
       setDocLoaded(true)
     }
     catch(err: any){
@@ -65,8 +68,8 @@ function App() {
         <Nav error={error} />
       </header>
       
-      {docLoaded && <CvBuilder id={id} doc={loadedDoc} />}
-      {!docLoaded && metadata.length > 0 && <DocumentSelector metadata={metadata} onNewDocument={newDocument} onDocumentSelected={(v) => loadDocument(v)}/>}
+      {docLoaded && <CvBuilder id={id} docTitle={loadedTitle} doc={loadedDoc} />}
+      {!docLoaded && metadata.length > 0 && <DocumentSelector metadata={metadata} onNewDocument={newDocument} onDocumentSelected={(v, t) => loadDocument(v, t)}/>}
 
     </>
   )

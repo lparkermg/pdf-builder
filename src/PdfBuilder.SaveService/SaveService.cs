@@ -1,4 +1,6 @@
 ﻿using Grpc.Core;
+using Grpc.Core.Logging;
+using Microsoft.Extensions.Logging;
 using PdfBuilder.Common.FileSystem;
 using PdfBuilder.Common.Models;
 using System;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace PdfBuilder.SaveService
 {
-    public class SaveService(IFileSystem fs) : Save.SaveBase
+    public class SaveService(IFileSystem fs, ILogger<SaveService> logger) : Save.SaveBase
     {
         private readonly IFileSystem _fs = fs;
         public override async Task<SaveResponse> Save(SaveRequest request, ServerCallContext context)
@@ -24,10 +26,22 @@ namespace PdfBuilder.SaveService
 
             var fileName = $"{id}.dat";
             var fileData = Encoding.UTF8.GetBytes(request.Content);
-            if (!await _fs.SaveFile(fileName, fileData))
+
+            if (string.IsNullOrWhiteSpace(request.Id))
             {
-                response.Id = Guid.Empty.ToString();
-                return response;
+                if (!await _fs.SaveFile(fileName, fileData))
+                {
+                    response.Id = Guid.Empty.ToString();
+                    return response;
+                }
+            }
+            else
+            {
+                if (!await _fs.SaveFile(fileName, fileData, true))
+                {
+                    response.Id = Guid.Empty.ToString();
+                    return response;
+                }
             }
 
             if (_fs.TryGetFile("metadata.meta", out var metaData))
@@ -49,7 +63,7 @@ namespace PdfBuilder.SaveService
                     });
                 }
 
-                await _fs.SaveFile("metadata.meta", Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data)));
+                await _fs.SaveFile("metadata.meta", Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data)), true);
             }
             else
             {

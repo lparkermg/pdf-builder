@@ -26,7 +26,7 @@ namespace PdfBuilder.Common.FileSystem
             
         }
 
-        public async Task<bool> SaveFile(string fileName, byte[] data)
+        public async Task<bool> SaveFile(string fileName, byte[] data, bool updatingFile = false)
         {
             var file = $"{_options.BasePath}/{fileName}";
             if (string.IsNullOrWhiteSpace(fileName))
@@ -34,7 +34,7 @@ namespace PdfBuilder.Common.FileSystem
                 return false;
             }
 
-            if (File.Exists(file))
+            if (!updatingFile && File.Exists(file))
             {
                 return false;
             }

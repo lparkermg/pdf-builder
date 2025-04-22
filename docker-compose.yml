@@ -47,7 +47,7 @@ services:
       - ASPNETCORE_URLS=https://+:5002
       - ASPNETCORE_Kestrel__Certificates__Default__Password=pAs5w0rd
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
-      - PDFBUILDER_SERVICE_Settings__Files__Local__BasePath=/data
+      - PDFBUILDER_SAVESERVICE_Settings__Files__Local__BasePath=/data
     volumes:
       - ${USERPROFILE}\.aspnet\https:/https/:ro
       - pdf_data:/data:rw

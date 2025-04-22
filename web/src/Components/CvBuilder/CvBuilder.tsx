@@ -6,12 +6,13 @@ import CvContentArea from "./CvContentArea";
 
 interface CvBuilderProps{
     id: string;
+    docTitle: string;
     doc: CvDocument;
 }
 
-function CvBuilder({id, doc}: CvBuilderProps){
+function CvBuilder({id, docTitle, doc}: CvBuilderProps){
     const [docId, setDocId] = useState<string>(id)
-    const [title, setTitle] = useState<string>("")
+    const [title, setTitle] = useState<string>(docTitle)
 
     const [selectedTemplate, setSelectedTemplate] = useState<number>(doc.template)
     const [selectedTheme, setSelectedTheme] = useState<number>(doc.theme)
@@ -113,6 +114,8 @@ function CvBuilder({id, doc}: CvBuilderProps){
             title="CV Settings"
             templates={templates.templates}
             themes={themes.themes}
+            defaultTemplate={selectedTemplate}
+            defaultTheme={selectedTheme}
             onSubmit={(template, theme) => generateCv(template, theme)}
             onTemplateChanged={(v) => setSelectedTemplate(v)}
             onThemeChanged={(v) => setSelectedTheme(v)} />
