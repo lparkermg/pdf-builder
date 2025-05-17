@@ -19,6 +19,7 @@ section:nth-child(2)
     justify-content: flex-start;
     align-items: center;
     font-size:smaller;
+    padding-bottom: 0.25em;
 }
 
 section {
@@ -63,7 +64,7 @@ article {
     margin-right: 5%;
     padding-left: 1rem;
     padding-right: 1rem;
-    page-break-inside: avoid;
+    break-inside: avoid;
     width: 85%;
     flex-shrink: 1;
     flex-grow: 0;
