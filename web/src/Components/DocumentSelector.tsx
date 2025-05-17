@@ -3,7 +3,7 @@ import { MetadataItemResponse } from "../../models/api";
 interface DocumentSelectorProps {
     metadata: MetadataItemResponse[];
     onNewDocument(): void;
-    onDocumentSelected(id: string): void;
+    onDocumentSelected(id: string, title: string): void;
 }
 
 function DocumentSelector({metadata, onNewDocument, onDocumentSelected}: DocumentSelectorProps){
@@ -17,11 +17,11 @@ function DocumentSelector({metadata, onNewDocument, onDocumentSelected}: Documen
             </button>
         }
         else{
-            return <button className="doc-btn" onClick={() => onDocumentSelected(v.id)}>
+            return <button className="doc-btn" onClick={() => onDocumentSelected(v.id, v.title)}>
                 <div className="doc-btn-content">
                     <h3>{v.title}</h3>
                     <div>
-                        <span>{v.lastModifiedAt.toDateString()}</span>
+                        <span>{v.lastModifiedAt.toLocaleString("en-GB")}</span>
                     </div>
                     
                 </div>

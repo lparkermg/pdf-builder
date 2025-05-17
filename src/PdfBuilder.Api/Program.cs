@@ -123,11 +123,22 @@ app.MapPost("/saves/new", async ([FromBody] NewMetadataRequest data, IOptions<Ap
     return Results.Ok(resp.Id);
 });
 
+app.MapPost("/saves/clone", async (IOptions<ApiOptions> apiOps) =>
+{
+    var channel = setupChannel(apiOps.Value.SaveServiceUri);
+    var loadClient = new Load.LoadClient(channel);
+    var loadedData = await loadClient.LoadAsync(new LoadRequest { Id = "" });
+
+    var saveClient = new Save.SaveClient(channel);
+    var resp = await saveClient.SaveAsync(new SaveRequest { Content = loadedData.Content, Title = "Title"});
+    return Results.Ok(resp.Id);
+});
+
 app.MapPatch("/saves/update", async ([FromBody] UpdateMetadataRequest data, IOptions<ApiOptions> apiOps) =>
 {
     var channel = setupChannel(apiOps.Value.SaveServiceUri);
     var client = new Save.SaveClient(channel);
-    var resp = await client.SaveAsync(new SaveRequest { Content = data.Content, Title = data.Title, Id = data.Id });
+    var resp = await client.SaveAsync(new SaveRequest { Content = data.Content.ToJsonString(), Title = data.Title, Id = data.Id });
 
     return Results.Ok(resp.Id);
 });
