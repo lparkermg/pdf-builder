@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace PdfBuilder.SaveService
 {
+
     public class SaveService(IFileSystem fs, ILogger<SaveService> logger) : Save.SaveBase
     {
         private readonly IFileSystem _fs = fs;
@@ -64,6 +65,7 @@ namespace PdfBuilder.SaveService
                 }
 
                 await _fs.SaveFile("metadata.meta", Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data)), true);
+
             }
             else
             {

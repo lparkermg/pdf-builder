@@ -1,6 +1,7 @@
-﻿using System.Text.Json.Nodes;
+using System.Text.Json.Nodes;
 
 namespace PdfBuilder.Api.Models.Request
+
 {
     public class UpdateMetadataRequest
     {

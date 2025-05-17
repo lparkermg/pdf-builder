@@ -33,6 +33,7 @@ function App() {
       content: [],
       sidebar: [],
     })
+
     setLoadedTitle("")
     setDocLoaded(true)
   }
@@ -67,7 +68,7 @@ function App() {
       <header>
         <Nav error={error} />
       </header>
-      
+
       {docLoaded && <CvBuilder id={id} docTitle={loadedTitle} doc={loadedDoc} />}
       {!docLoaded && metadata.length > 0 && <DocumentSelector metadata={metadata} onNewDocument={newDocument} onDocumentSelected={(v, t) => loadDocument(v, t)}/>}
 
