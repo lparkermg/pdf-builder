@@ -13,8 +13,8 @@ builder.Services.Configure<AssetOptions>(builder.Configuration.GetSection("Asset
 builder.Services.Configure<LocalFileSystemOptions>(builder.Configuration.GetSection("Settings:Files:Local"));
 
 builder.Services.AddScoped<AssetLoader>();
-builder.Services.AddScoped<IFileSystem, LocalFileSystem>();
-builder.Services.AddScoped<PdfGenerator>();
+builder.Services.AddSingleton<IFileSystem, LocalFileSystem>();
+builder.Services.AddSingleton<PdfGenerator>();
 builder.Services.AddGrpc();
 
 var app = builder.Build();
