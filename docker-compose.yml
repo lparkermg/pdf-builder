@@ -14,7 +14,7 @@ services:
     ports:
       - "5117:5117"
     volumes:
-      - ${USERPROFILE}\.aspnet\https:/https/:ro
+      - ${USERPROFILE}/.aspnet/https:/https/:ro
       - pdf_data:/data:ro
     networks:
       pdfbuilder_net:
@@ -32,8 +32,8 @@ services:
       - PDFBUILDER_SERVICE_Assets__ThemesManifest=/assets/manifests/themes.json
       - PDFBUILDER_SERVICE_Settings__Files__Local__BasePath=/data
     volumes:
-      - ${USERPROFILE}\.aspnet\https:/https/:ro
-      - .\assets-example:/assets/:ro
+      - ${USERPROFILE}/.aspnet/https:/https/:ro
+      - ./assets-example:/assets/:ro
       - pdf_data:/data:rw
     networks:
       pdfbuilder_net:
@@ -50,7 +50,7 @@ services:
       - PDFBUILDER_SAVESERVICE_Settings__Files__Local__BasePath=/data
 
     volumes:
-      - ${USERPROFILE}\.aspnet\https:/https/:ro
+      - ${USERPROFILE}/.aspnet/https:/https/:ro
       - pdf_data:/data:rw
     networks:
       pdfbuilder_net:

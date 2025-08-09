@@ -10,7 +10,7 @@ body {
 section:nth-child(1) {
     color: aliceblue;
     background-color: #483d8b;
-    max-width: 18rem;
+    max-width: 22rem;
 }
 
 section:nth-child(2) 
