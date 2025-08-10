@@ -1,0 +1,71 @@
+:root {
+    --border-colour: #5400a3;
+    --sidebar-bkg-colour: #efddff;
+    --content-area-bkg-colour: #f9ddff;
+    --input-bkg-colour: #fcf8ff;
+}
+
+main {
+    display: flex
+}
+
+main > section {
+    flex: 1
+}
+
+nav {
+    display: flex;
+
+    margin-top: 1em;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-bottom: 1em;
+    padding: 0.5em 2em;
+
+    justify-content: space-between;
+}
+
+header > nav {
+    border: solid 0.25em var(--border-colour);
+    border-radius: 1em;
+}
+
+aside {
+    max-width: fit-content;
+    margin: 1em;
+    padding: 1em;
+
+    border-radius: 1em;
+    background-color: var(--sidebar-bkg-colour);
+    transition: 0.5s;
+}
+
+aside:hover {
+    padding: 1.5em;
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+}
+
+label > span {
+    font-weight: 700;
+}
+
+select {
+    border-radius: 0.5em;
+    padding: 0.5em;
+
+    border-width: 0;
+    background-color: var(--input-bkg-colour);
+
+    min-width: 10em;
+}
+
+.content-area {
+    border-radius: 0.5em;
+    margin: 1em;
+    padding: 1em;
+    background-color: var(--content-area-bkg-colour);
+}
