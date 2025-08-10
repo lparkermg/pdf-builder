@@ -22,7 +22,7 @@
     --button-border-danger:#fff5f5;
 
     --button-bkg-primary: #7b358d;
-    --button-bkg-primary-hover: #d59deb;
+    --button-bkg-primary-hover: #f1cdff;
     --button-text-primary: #f1cdff;
     --button-text-primary-hover: #7b358d;
     --button-border-primary: #42005c;
@@ -63,11 +63,6 @@ aside {
 
     border-radius: 1em;
     background-color: var(--sidebar-bkg-colour);
-    transition: 0.25s ease-in-out;
-}
-
-aside:hover {
-    padding: 1.5em;
 }
 
 label {
@@ -95,7 +90,7 @@ button {
     border: 0px solid transparent;
     transition: 0.25s ease-in-out;
     background: var(--button-bkg-base);
-
+    color: var(--button-border-primary);
     font-weight: 700;
 }
 
@@ -108,10 +103,31 @@ button:disabled {
     color: var(--button-text-disabled);
 }
 
+textarea {
+    background: var(--input-bkg-colour);
+    border: 0px solid transparent;
+    border-radius: 0.5em;
+    padding: 0.5em;
+    margin-right: 0.25em;
+}
+
+input {
+    background: var(--input-bkg-colour);
+    border: 0px solid transparent;
+    border-radius: 0.5em;
+    padding: 0.5em;
+}
+
 .content-area {
     border-radius: 0.5em;
     margin: 1em;
     padding: 1em;
+}
+
+.content-nav {
+    align-content: center;
+    border-radius: 1em;
+    background: var(--content-area-bkg-colour);
 }
 
 .content-section {
@@ -121,13 +137,25 @@ button:disabled {
     background-color: var(--content-area-bkg-colour);
 }
 
+.content-item {
+    display: flex;
+    margin-bottom: 0.5em;
+}
+
+.content-item > textarea {
+    min-height: 10em;
+    flex: 1 0 0%;
+    resize: none;
+}
+
 .btn-positive {
     background: var(--button-bkg-positive);
     color: var(--button-text-positive)
 }
 
 .btn-positive:not([disabled]):hover {
-    background: var(--button-bkg-positive-hover)
+    background: var(--button-text-positive);
+    color: var(--button-bkg-positive);
 }
 
 .btn-primary {
