@@ -1,8 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 :root {
     --border-colour: #5400a3;
     --sidebar-bkg-colour: #efddff;
     --content-area-bkg-colour: #f9ddff;
     --input-bkg-colour: #fcf8ff;
+
+    /*Buttons*/
+    --button-bkg-base: var(--sidebar-bkg-colour);
+    --button-bkg-base-hover: var(--input-bkg-colour);
+    --button-bkg-disabled: #727272;
+    --button-text-disabled: #d4d4d4;
+
+    --button-bkg-positive: #009c0d;
+    --button-text-positive: #c7ffcf;
+    --button-bkg-positive-hover: #01db42;
+
+    --button-bkg-danger: #df0000;
+    --button-text-danger: #fff5f5;
+    --button-bkg-danger-hover: #fff5f5;
+    --button-text-danger-hover:#df0000;
+    --button-border-danger:#fff5f5;
+
+    --button-bkg-primary: #7b358d;
+    --button-bkg-primary-hover: #d59deb;
+    --button-text-primary: #f1cdff;
+    --button-text-primary-hover: #7b358d;
+    --button-border-primary: #42005c;
+
+    font-family: "Inter", sans-serif;
 }
 
 main {
@@ -32,12 +57,13 @@ header > nav {
 
 aside {
     max-width: fit-content;
+    max-height: fit-content;
     margin: 1em;
     padding: 1em;
 
     border-radius: 1em;
     background-color: var(--sidebar-bkg-colour);
-    transition: 0.5s;
+    transition: 0.25s ease-in-out;
 }
 
 aside:hover {
@@ -57,15 +83,79 @@ select {
     border-radius: 0.5em;
     padding: 0.5em;
 
-    border-width: 0;
+    border: 0px solid transparent;
     background-color: var(--input-bkg-colour);
 
     min-width: 10em;
+}
+
+button {
+    border-radius: 1em;
+    padding: 1em;
+    border: 0px solid transparent;
+    transition: 0.25s ease-in-out;
+    background: var(--button-bkg-base);
+
+    font-weight: 700;
+}
+
+button:not([disabled]):hover {
+    background: var(--button-bkg-base-hover);
+}
+
+button:disabled {
+    background: var(--button-bkg-disabled);
+    color: var(--button-text-disabled);
 }
 
 .content-area {
     border-radius: 0.5em;
     margin: 1em;
     padding: 1em;
+}
+
+.content-section {
+    border-radius: 0.5em;
+    margin: 1em;
+    padding: 1em;
     background-color: var(--content-area-bkg-colour);
+}
+
+.btn-positive {
+    background: var(--button-bkg-positive);
+    color: var(--button-text-positive)
+}
+
+.btn-positive:not([disabled]):hover {
+    background: var(--button-bkg-positive-hover)
+}
+
+.btn-primary {
+    background: var(--button-bkg-primary);
+    color: var(--button-text-primary);
+    border: 0.25em solid var(--button-border-primary);
+}
+
+.btn-primary:not([disabled]):hover {
+    background: var(--button-bkg-primary-hover);
+    color: var(--button-text-primary-hover);
+}
+
+.btn-danger {
+    background: var(--button-bkg-danger);
+    color: var(--button-text-danger);
+    border: 0.25em solid var(--button-border-danger);
+    fill: var(--button-text-danger);
+}
+
+.btn-danger:not([disabled]):hover {
+    background: var(--button-bkg-danger-hover);
+    color: var(--button-text-danger-hover);
+    fill: var(--button-text-danger-hover);
+}
+
+.flex-centre {
+    display: flex;
+    flex-direction:column;
+    justify-content:center;
 }
