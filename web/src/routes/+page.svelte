@@ -1,2 +1,12 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script lang="ts">
+	import HeaderNavigation from "$lib/Components/Global/HeaderNavigation.svelte";
+	import LandingArea from "$lib/Components/Layout/LandingArea.svelte";
+</script>
+
+<HeaderNavigation title={"PDF Generator"}>
+    <div>Home</div>
+</HeaderNavigation>
+
+<LandingArea items={[]} onNewClick={() => {}} onLoadItemClick={(i) => {}}>
+
+</LandingArea>
