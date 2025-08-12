@@ -1,12 +1,24 @@
-FROM node:20-alpine AS build
+FROM node:22-alpine AS build
 
 WORKDIR /build
 
+COPY ./web/package*.json ./
+RUN npm ci
+
 COPY ./web .
 
-RUN npm install
+RUN mv ./vite.config.ts.container ./vite.config.ts
+
 RUN npm run build
+RUN npm prune --production
 
-FROM nginx AS final
+FROM node:22-alpine AS final
 
-COPY --from=build /build/dist /usr/share/nginx/html
+WORKDIR /app
+
+COPY --from=build /build/build build/
+COPY --from=build /build/node_modules node_modules/
+COPY ./web/package.json .
+
+ENV NODE_ENV=production
+CMD ["node", "build"]

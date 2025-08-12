@@ -59,8 +59,10 @@ services:
     build:
       context: .
       dockerfile: ./docker/web/Dockerfile
+    environment:
+      - PORT=5118
     ports:
-      - "5118:80"
+      - "5118:5118"
     networks:
       pdfbuilder_net:
       
