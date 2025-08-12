@@ -187,3 +187,17 @@ input {
     flex-direction:column;
     justify-content:center;
 }
+
+.landing-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.landing-centre {
+    justify-items:center;
+}
+
+.btn-landing {
+    border: 0.5em dashed var(--button-border-primary);
+    margin-bottom: 1em;
+}
