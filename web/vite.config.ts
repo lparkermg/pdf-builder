@@ -8,6 +8,6 @@ export default defineConfig({
 		'process.env': process.env
 	},
 	server: {
-		port: 5117
+		port: 5128
 	}
 });

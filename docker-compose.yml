@@ -1,5 +1,6 @@
 services:
   pdfbuilder-api:
+    hostname: pdfbuilder-api
     build:
       context: .
       dockerfile: ./docker/api/Dockerfile
@@ -56,11 +57,14 @@ services:
       pdfbuilder_net:
 
   pdfbuilder-web:
+    hostname: pdfbuilder-web
     build:
       context: .
       dockerfile: ./docker/web/Dockerfile
     environment:
       - PORT=5118
+      - PDFBUILDER_UI_Api__Internal__Uri=http://pdfbuilder-api:5117/
+      - PDFBUILDER_UI_Api__External__Uri=http://pdfbuilder.localhost:5117/
     ports:
       - "5118:5118"
     networks:
