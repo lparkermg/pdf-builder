@@ -1,4 +1,4 @@
-import type { CvDocument, CvRequest } from "$lib/models/api";
+import type { CvDocument, CvRequest, UnparsedLoadResponse } from "$lib/models/api";
 
 export async function generate(onerror: (e: Error) => void, request: CvRequest, baseUri: string | undefined, origin: string | undefined): Promise<string | null> {
     if (!baseUri) {
@@ -121,5 +121,7 @@ export async function load(onerror: (e: Error) => void, id: string, baseUri: str
         return undefined
     }
 
-    return await resp.json() as CvDocument
+    const unparsedResp = await resp.json() as UnparsedLoadResponse
+
+    return JSON.parse(unparsedResp.content) as CvDocument
 }

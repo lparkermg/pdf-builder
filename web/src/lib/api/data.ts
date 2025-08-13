@@ -53,7 +53,7 @@ export async function getTemplates(onerror: (e: Error) => void, baseUri: string 
         }
     }
 
-    const uri = `${baseUri}themes`
+    const uri = `${baseUri}templates`
     const resp = await fetch(uri, {
         method: 'GET',
         headers: {
