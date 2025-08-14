@@ -60,7 +60,7 @@ export async function save(onerror: (e: Error) => void, id: string | undefined, 
     let method = '';
     let body = '';
 
-    if (id === undefined){
+    if (id === undefined || id === ""){
         uri = `${baseUri}saves/new`
         method = "POST"
         body = JSON.stringify({ title, content })
@@ -75,7 +75,8 @@ export async function save(onerror: (e: Error) => void, id: string | undefined, 
         method: method,
         body: body,
         headers: {
-            "origin": `${origin}`
+            "origin": `${origin}`,
+            'Content-Type': 'application/json'
         }
     })
 

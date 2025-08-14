@@ -1,11 +1,12 @@
 <script lang="ts">
-	import type { CvDocument, DataPair } from "$lib/models/api";
+	import type { CvDocument, DataPair, CvRequest } from "$lib/models/api";
     import type { CvData } from "$lib/models/site";
 	import Sidebar from "./Editor/Sidebar.svelte";
     import * as dataapi from "$lib/api/data";
     import * as cvapi from "$lib/api/cv";
 	import { page } from "$app/state";
 	import { tick } from "svelte";
+	import NavBar from "./Editor/NavBar.svelte";
 
     interface CvEditorProps {
         apiBase: string,
@@ -15,35 +16,91 @@
     const { apiBase, id }: CvEditorProps = $props()
 
     let document: CvDocument= $state({
+        title: "",
         content: [],
         sidebar: [],
         theme: 0,
         template: 0,
     })
 
+    let loading: boolean = $state(true)
+
+    let currentId: string | undefined = $state(id)
+
+    let currentTitle: string = $state("")
     let currentTheme: number = $state(0)
     let currentTemplate: number = $state(0)
+
+    let currentContentSections: string[] = $state([])
+    let currentSidebarSections: string[] = $state([])
     
     let themes: DataPair[] = $state([])
     let templates: DataPair[] = $state([])
 
-    // TODO: Handle Load etc in here. rather than in the main page.
     async function setupEditor(id: string | undefined){
+        loading = true;
+        await tick()
         const themesResp = await dataapi.getThemes((e) => {}, apiBase, page.url.host)
         const templatesResp = await dataapi.getTemplates((e) => {}, apiBase, page.url.host);
 
         themes = themesResp.themes;
         templates = templatesResp.templates;
-        if(id !== undefined && id !== ""){
-            const cv = await cvapi.load((e) => {}, id, apiBase, page.url.host);
+        if(currentId !== undefined && currentId !== ""){
+            const cv = await cvapi.load((e) => {}, currentId, apiBase, page.url.host);
 
             if (cv !== undefined){
                 document = cv
 
+                currentTitle = cv?.title
+
                 currentTheme = cv?.theme;
                 currentTemplate = cv?.template;
+
+                currentSidebarSections = cv?.sidebar
+                currentContentSections = cv?.content
             }        
         }
+        loading = false;
+        await tick()
+    }
+
+    async function updateTitle(newTitle: string) {
+        document.title = newTitle
+        currentTitle = newTitle
+    }
+
+    async function saveChanges(){
+        loading = true;
+        await tick();
+
+        document.title = currentTitle;
+        document.theme = currentTheme;
+        document.template = currentTemplate;
+        document.sidebar = currentSidebarSections;
+        document.content = currentContentSections;
+
+        const newId = await cvapi.save((e) => {}, currentId, currentTitle, document, apiBase, page.url.host);
+
+        if (newId !== "" && (currentId === undefined || currentId === "")){
+            currentId = newId
+        }
+
+        loading = false
+        await tick()
+    }
+
+    async function generateCv() {
+        loading = true;
+        await tick()
+
+        const resp = await cvapi.generate((e) => {}, {
+            template: currentTemplate,
+            theme: currentTheme,
+            content: currentContentSections,
+            sidebar: currentSidebarSections
+        }, apiBase, page.url.host)
+
+        loading = false
         await tick()
     }
 
@@ -60,5 +117,13 @@
         bind:currentTemplate={currentTemplate}
         onTemplateChanged={(t) => currentTemplate = t}
         />
-        <section></section>
+        <section>
+            <NavBar
+                canInteract={!loading}
+                bind:fileTitleValue={currentTitle}
+                onFileTitleChanged={v => updateTitle(v)}
+                onSave={saveChanges}
+                onGenerate={generateCv}
+                 />
+        </section>
 </main>

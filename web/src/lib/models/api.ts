@@ -35,6 +35,7 @@ export interface UnparsedLoadResponse {
 }
 
 export interface CvDocument {
+    title: string;
     template: number;
     theme: number;
     content: string[];
