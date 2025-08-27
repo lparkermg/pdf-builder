@@ -82,11 +82,12 @@ select {
     background-color: var(--input-bkg-colour);
 
     min-width: 10em;
+    margin-bottom:0.5em;
 }
 
 button {
     border-radius: 1em;
-    padding: 1em;
+    padding: 0.75em;
     border: 0px solid transparent;
     transition: 0.25s ease-in-out;
     background: var(--button-bkg-base);
@@ -125,9 +126,12 @@ input {
 }
 
 .content-nav {
-    align-content: center;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
     border-radius: 1em;
     background: var(--content-area-bkg-colour);
+    padding: 1em;
 }
 
 .content-section {
@@ -146,6 +150,10 @@ input {
     min-height: 10em;
     flex: 1 0 0%;
     resize: none;
+}
+
+.content-btn-area {
+    margin-left:0.5em;
 }
 
 .btn-positive {

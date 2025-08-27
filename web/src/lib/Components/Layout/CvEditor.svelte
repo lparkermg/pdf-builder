@@ -7,6 +7,7 @@
 	import { page } from "$app/state";
 	import { tick } from "svelte";
 	import NavBar from "./Editor/NavBar.svelte";
+	import ContentSection from "./Editor/ContentSection.svelte";
 
     interface CvEditorProps {
         apiBase: string,
@@ -69,6 +70,33 @@
         currentTitle = newTitle
     }
 
+    async function addContentSection(addingSidebar: boolean){
+        if(addingSidebar){
+            currentSidebarSections.push("");
+        }
+        else {
+            currentContentSections.push("")
+        }
+    }
+
+    async function updateContentSection(sectionIndex: number, newContent: string, isSidebar: boolean) {
+        if (isSidebar){
+            currentSidebarSections[sectionIndex] = newContent
+        }
+        else{
+            currentContentSections[sectionIndex] = newContent
+        }
+    }
+
+    async function removeSection(sectionIndex: number, isSidebar: boolean) {
+        if (isSidebar){
+            currentSidebarSections.splice(sectionIndex, 1)
+        }
+        else {
+            currentContentSections.splice(sectionIndex, 1)
+        }
+    }
+
     async function saveChanges(){
         loading = true;
         await tick();
@@ -125,5 +153,27 @@
                 onSave={saveChanges}
                 onGenerate={generateCv}
                  />
+                 <div class="content-nav">
+                    <strong>
+                        Sidebar
+                    </strong>
+                    <button class="btn-positive" onclick={() => addContentSection(true)}>
+                        <strong>+</strong>
+                    </button>
+                </div>
+                 {#each currentSidebarSections as section, i}
+                    <ContentSection content={section} onContentChanged={n => updateContentSection(i, n, true)} onRemoveClicked={() => removeSection(i, true)} />
+                 {/each}
+                 <div class="content-nav">
+                    <strong>
+                        Main Area
+                    </strong>
+                    <button class="btn-positive" onclick={() => addContentSection(false)}>
+                        <strong>+</strong>
+                    </button>
+                </div>
+                 {#each currentContentSections as section, i}
+                    <ContentSection content={section} onContentChanged={(n) => updateContentSection(i, n, false)} onRemoveClicked={() => removeSection(i, false)} />
+                 {/each}
         </section>
 </main>
