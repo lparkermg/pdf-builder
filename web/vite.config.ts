@@ -1,13 +1,10 @@
+import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 
-// This is the config that is used to run the UI from outside the container, mainly for active development.
-export default defineConfig({
-	plugins: [sveltekit()],
-	define: {
-		'process.env': process.env
-	},
-	server: {
+export default defineConfig({ 
+    plugins: [tailwindcss(), sveltekit()],
+    server: {
 		port: 5128
 	}
-});
+ });
