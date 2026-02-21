@@ -157,6 +157,15 @@ app.MapGet("/saves", async ([FromQuery] string id, IOptions<ApiOptions> apiOps) 
     return Results.Ok(data);
 });
 
+app.MapDelete("/saves", async ([FromQuery] string id, IOptions<ApiOptions> apiOps) =>
+{
+    var channel = setupChannel(apiOps.Value.SaveServiceUri);
+    var client = new Delete.DeleteClient(channel);
+    var resp = await client.DeleteAsync(new DeleteRequest { Id = id });
+
+    return Results.Ok(resp);
+});
+
 app.MapGet("/file/{fileName}.pdf", (string fileName, IFileSystem fs) =>
 {
     var success = fs.TryGetFile($"{fileName}.pdf", out var data);

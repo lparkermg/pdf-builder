@@ -32,3 +32,15 @@ message LoadResponse {
 message LoadMetadataResponse {
 	string Metadata = 1;
 }
+
+service Delete {
+	rpc Delete(DeleteRequest) returns (DeleteResponse);
+}
+
+message DeleteRequest {
+	string id = 1;
+}
+
+message DeleteResponse {
+	bool success = 1;
+}
