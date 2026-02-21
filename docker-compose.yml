@@ -1,5 +1,6 @@
 services:
   pdfbuilder-api:
+    hostname: pdfbuilder-api
     build:
       context: .
       dockerfile: ./docker/api/Dockerfile
@@ -14,7 +15,7 @@ services:
     ports:
       - "5117:5117"
     volumes:
-      - ${USERPROFILE}/.aspnet/https:/https/:ro
+      - ./certs/:/https/:ro
       - pdf_data:/data:ro
     networks:
       pdfbuilder_net:
@@ -32,7 +33,7 @@ services:
       - PDFBUILDER_SERVICE_Assets__ThemesManifest=/assets/manifests/themes.json
       - PDFBUILDER_SERVICE_Settings__Files__Local__BasePath=/data
     volumes:
-      - ${USERPROFILE}/.aspnet/https:/https/:ro
+      - ./certs/:/https/:ro
       - ./assets-example:/assets/:ro
       - pdf_data:/data:rw
     networks:
@@ -50,17 +51,23 @@ services:
       - PDFBUILDER_SAVESERVICE_Settings__Files__Local__BasePath=/data
 
     volumes:
-      - ${USERPROFILE}/.aspnet/https:/https/:ro
+      - ./certs/:/https/:ro
       - pdf_data:/data:rw
     networks:
       pdfbuilder_net:
 
   pdfbuilder-web:
+    hostname: pdfbuilder-web
     build:
       context: .
       dockerfile: ./docker/web/Dockerfile
+    environment:
+      - PORT=5118
+      - PDFBUILDER_UI_Api__Internal__Uri=http://pdfbuilder-api:5117/
+      - PDFBUILDER_UI_Api__External__Uri=http://pdfbuilder.localhost:5117/
+      - PDFBUILDER_UI_Host__Uri=http://pdfbuilder.localhost:5118/
     ports:
-      - "5118:80"
+      - "5118:5118"
     networks:
       pdfbuilder_net:
       

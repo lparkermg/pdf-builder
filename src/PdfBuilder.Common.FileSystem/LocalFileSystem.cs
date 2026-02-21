@@ -28,18 +28,32 @@ namespace PdfBuilder.Common.FileSystem
 
         public async Task<bool> SaveFile(string fileName, byte[] data, bool updatingFile = false)
         {
-            var file = $"{_options.BasePath}/{fileName}";
+            
             if (string.IsNullOrWhiteSpace(fileName))
             {
                 return false;
             }
 
+            var file = $"{_options.BasePath}/{fileName}";
             if (!updatingFile && File.Exists(file))
             {
                 return false;
             }
 
             await File.WriteAllBytesAsync(file, data);
+
+            return true;
+        }
+
+        public bool DeleteFile(string fileName){
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                return false;
+            }
+
+            var file = $"{_options.BasePath}/{fileName}";
+
+            File.Delete(file);
 
             return true;
         }

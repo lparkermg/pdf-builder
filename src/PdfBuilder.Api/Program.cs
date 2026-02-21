@@ -9,6 +9,11 @@ using PdfBuilder.Common.FileSystem;
 using PdfBuilder.Common.FileSystem.Configuration;
 using System.Text.Json;
 
+var _options = new JsonSerializerOptions
+{
+    PropertyNameCaseInsensitive = true
+};
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables("PDFBUILDER_API_");
 builder.Services.Configure<LocalFileSystemOptions>(builder.Configuration.GetSection("Settings:Files:Local"));
@@ -118,7 +123,7 @@ app.MapPost("/saves/new", async ([FromBody] NewMetadataRequest data, IOptions<Ap
 {
     var channel = setupChannel(apiOps.Value.SaveServiceUri);
     var client = new Save.SaveClient(channel);
-    var resp = await client.SaveAsync(new SaveRequest { Content = data.Content.ToJsonString(), Title = data.Title });
+    var resp = await client.SaveAsync(new SaveRequest { Content = data.Content, Title = data.Title });
 
     return Results.Ok(resp.Id);
 });
@@ -138,7 +143,7 @@ app.MapPatch("/saves/update", async ([FromBody] UpdateMetadataRequest data, IOpt
 {
     var channel = setupChannel(apiOps.Value.SaveServiceUri);
     var client = new Save.SaveClient(channel);
-    var resp = await client.SaveAsync(new SaveRequest { Content = data.Content.ToJsonString(), Title = data.Title, Id = data.Id });
+    var resp = await client.SaveAsync(new SaveRequest { Content = data.Content, Title = data.Title, Id = data.Id });
 
     return Results.Ok(resp.Id);
 });
@@ -150,6 +155,15 @@ app.MapGet("/saves", async ([FromQuery] string id, IOptions<ApiOptions> apiOps) 
     var data = await client.LoadAsync(new LoadRequest { Id = id });
 
     return Results.Ok(data);
+});
+
+app.MapDelete("/saves", async ([FromQuery] string id, IOptions<ApiOptions> apiOps) =>
+{
+    var channel = setupChannel(apiOps.Value.SaveServiceUri);
+    var client = new Delete.DeleteClient(channel);
+    var resp = await client.DeleteAsync(new DeleteRequest { Id = id });
+
+    return Results.Ok(resp);
 });
 
 app.MapGet("/file/{fileName}.pdf", (string fileName, IFileSystem fs) =>

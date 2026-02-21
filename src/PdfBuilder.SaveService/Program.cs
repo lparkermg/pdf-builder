@@ -17,5 +17,6 @@ var app = builder.Build();
 
 app.MapGrpcService<SaveService>();
 app.MapGrpcService<LoadService>();
+app.MapGrpcService<DeleteService>();
 
 app.Run();

@@ -5,5 +5,7 @@
         bool TryGetFile(string fileName, out byte[] fileData);
 
         Task<bool> SaveFile(string fileName, byte[] data, bool updatingFile = false);
+    
+        bool DeleteFile(string fileName);
     }
 }
