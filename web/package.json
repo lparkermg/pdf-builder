@@ -33,6 +33,8 @@
 		"vite": "^7.3.1"
 	},
 	"dependencies": {
-		"bits-ui": "^2.16.1"
+		"bits-ui": "^2.16.1",
+		"date-fns": "^4.1.0",
+		"lucide-svelte": "^0.575.0"
 	}
 }

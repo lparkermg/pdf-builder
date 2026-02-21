@@ -8,7 +8,7 @@
     } : {
         title: string,
         subtitle: string,
-        action: string,
+        action?: string,
     } = $props();
 
     function handleActionClicked(){
