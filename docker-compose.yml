@@ -62,10 +62,11 @@ services:
       context: .
       dockerfile: ./docker/web/Dockerfile
     environment:
+      - HOST=0.0.0.0
       - PORT=5118
-      - PDFBUILDER_UI_Api__Internal__Uri=http://pdfbuilder-api:5117/
-      - PDFBUILDER_UI_Api__External__Uri=http://pdfbuilder.localhost:5117/
-      - PDFBUILDER_UI_Host__Uri=http://pdfbuilder.localhost:5118/
+      - PDFBUILDER_UI_Api__Internal__Uri=http://pdfbuilder-api:5117
+      - PDFBUILDER_UI_Api__External__Uri=http://localhost:5117
+      - PDFBUILDER_UI_Host__Uri=http://localhost:5118
     ports:
       - "5118:5118"
     networks:
