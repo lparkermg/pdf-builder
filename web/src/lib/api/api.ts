@@ -1,5 +1,5 @@
 import type { CvModel } from "$lib/internal/models";
-import type { CvLoadResponse, MetadataResponse } from "./models/responses";
+import type { AvailableTemplatesResponse, AvailableThemesResponse, CvLoadResponse, MetadataResponse } from "./models/responses";
 
 export async function getMetadata(baseUri: string, origin:string, abortController: AbortController, onError: (e: Error) => void): Promise<MetadataResponse | undefined> {
     if (baseUri.trim() === "" || origin.trim() === ""){
@@ -21,6 +21,46 @@ export async function getMetadata(baseUri: string, origin:string, abortControlle
     return await response.json() as MetadataResponse;
 }
 
+export async function getTemplates(baseUri: string, origin:string, abortController: AbortController, onError: (e: Error) => void): Promise<AvailableTemplatesResponse | undefined>{
+    if (baseUri.trim() === "" || origin.trim() === ""){
+        onError(new Error("Failed configuration validation for baseUri or origin. Both have to be populated."))
+        return undefined;
+    }
+
+    const uri = `${baseUri}/templates`;
+    const response = await fetch(uri, {
+        method: "GET",
+        signal: abortController.signal
+    });
+
+    if(!response.ok){
+        onError(new Error(`Failed to get cv with status ${response.statusText} (${response.status})`))
+        return undefined;
+    }
+
+    return await response.json() as AvailableTemplatesResponse;
+}
+
+export async function getThemes(baseUri: string, origin:string, abortController: AbortController, onError: (e: Error) => void): Promise<AvailableThemesResponse | undefined>{
+    if (baseUri.trim() === "" || origin.trim() === ""){
+        onError(new Error("Failed configuration validation for baseUri or origin. Both have to be populated."))
+        return undefined;
+    }
+
+    const uri = `${baseUri}/themes`;
+    const response = await fetch(uri, {
+        method: "GET",
+        signal: abortController.signal
+    });
+
+    if(!response.ok){
+        onError(new Error(`Failed to get cv with status ${response.statusText} (${response.status})`))
+        return undefined;
+    }
+
+    return await response.json() as AvailableThemesResponse;
+}
+
 export async function getCv(baseUri: string, origin: string, abortController: AbortController, onError: (e: Error) => void, id: string): Promise<CvLoadResponse | undefined>{
     if (baseUri.trim() === "" || origin.trim() === ""){
         onError(new Error("Failed configuration validation for baseUri or origin. Both have to be populated."))
@@ -40,6 +80,8 @@ export async function getCv(baseUri: string, origin: string, abortController: Ab
 
     return await response.json() as CvLoadResponse;
 }
+
+
 
 export async function saveNewCv(
     baseUri: string,
@@ -92,9 +134,9 @@ export async function saveCv(
 
     const jsonContent = JSON.stringify(cv);
 
-    const uri = `${baseUri}/saves/new`;
+    const uri = `${baseUri}/saves/update`;
     const response = await fetch(uri, {
-        method: "POST",
+        method: "PATCH",
         body: JSON.stringify({
             id,
             title,

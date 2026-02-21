@@ -7,7 +7,8 @@ export const CV_EVENTS = {
     CV_TITLE_UPDATED: "cv_title_updated",
     CV_SECTION_ADDED: "cv_section_added",
     CV_SECTION_REMOVED: "cv_section_removed",
-    CV_SECTION_UPDATED: "cv_section_updated"
+    CV_SECTION_UPDATED: "cv_section_updated",
+    CV_SETTING_CHANGED: "cv_setting_changed"
 }
 
 export const EMPTY_CV: CvModel = {

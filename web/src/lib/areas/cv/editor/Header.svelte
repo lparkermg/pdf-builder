@@ -1,20 +1,33 @@
 <script lang="ts">
+    import type { DataPairModel } from "$lib/internal/models";
     import { Button } from "bits-ui";
     import { Save } from "lucide-svelte";
 
     let {
         title,
         canSave,
+        selectedTheme,
+        selectedTemplate,
+        themes,
+        templates,
         onTitleChanged,
-        onSaveClicked
+        onSaveClicked,
+        onThemeChanged,
+        onTemplateChanged
     }:{
         title: String;
         canSave: boolean;
+        selectedTheme: number;
+        selectedTemplate: number;
+        themes: DataPairModel[];
+        templates: DataPairModel[];
         onTitleChanged: (newTitle: string) => void;
         onSaveClicked: () => void;
+        onThemeChanged: (newTheme: number) => void;
+        onTemplateChanged: (newTemplate: number) => void;
     } = $props()
 </script>
-<div class="flex items-center gap-3 mb-4">
+<div class="flex items-center gap-3 mb-2">
     <input
         class="w-full text-lg font-medium border-0 bg-slate-50 focus:bg-white transition-colors h-12 rounded-xl" 
         placeholder="CV Title..." 
@@ -30,4 +43,16 @@
         >
         <Save />    
     </Button.Root>   
+</div>
+<div class="flex items-start gap-3 mb-4">
+    <select value={selectedTemplate} onchange={(e) => onTemplateChanged(Number(e.currentTarget.value))}>
+        {#each templates as template}
+            <option value={template.id}>{template.display}</option>
+        {/each}
+    </select>
+    <select value={selectedTheme} onchange={(e) => onThemeChanged(Number(e.currentTarget.value))}>
+        {#each themes as theme}
+            <option value={theme.id}>{theme.display}</option>
+        {/each}
+    </select>
 </div>

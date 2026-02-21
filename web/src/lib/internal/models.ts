@@ -14,3 +14,8 @@ export interface CvModel {
     content: string[];
     sidebar: string[];
 }
+
+export interface DataPairModel {
+    id: number;
+    display: string;
+}

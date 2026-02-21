@@ -60,7 +60,7 @@
         })
 
         on(window, CV_EVENTS.SAVE_CV, async (e:Event) => {
-            if(selectedId || selectedId?.trim() !== ""){
+            if(selectedId !== undefined && selectedId?.trim() !== ""){
                 // We're updating an existing CV.
                 await api.saveCv(
                     data.baseUri,
@@ -126,6 +126,17 @@
                 currentCv.content.splice(sectionId, 1)
             }
         })
+
+        on(window, CV_EVENTS.CV_SETTING_CHANGED, (e: Event) => {
+            const { type, newSetting } = (e as CustomEvent<{ type:string, newSetting:number}>).detail
+
+            if(type === "theme"){
+                currentCv.theme = newSetting
+            }
+            if(type === "template"){
+                currentCv.template = newSetting
+            }
+        })
     })
 
 </script>
@@ -139,7 +150,7 @@
             selectedId={selectedId}
         />
         <!--Editor Area-->
-        <Editor title={title ?? ""} cv={currentCv} />
+        <Editor title={title ?? ""} cv={currentCv} themes={data.themes} templates={data.templates} />
     </GridContent>
 </Background>
         

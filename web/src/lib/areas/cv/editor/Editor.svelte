@@ -1,7 +1,7 @@
 <script lang="ts">
     import { Accordion, Button, Separator } from "bits-ui";
     import Header from "./Header.svelte";
-    import type { CvModel } from "$lib/internal/models";
+    import type { CvModel, DataPairModel } from "$lib/internal/models";
     import GridContent from "$lib/areas/GridContent.svelte";
     import { Plus, Trash } from "lucide-svelte";
     import SectionHeader from "./section/SectionHeader.svelte";
@@ -9,14 +9,22 @@
     import Section from "./section/Section.svelte";
     let {
         cv,
-        title
+        title,
+        themes,
+        templates
     }:{
         cv: CvModel
         title: string
+        themes: DataPairModel[],
+        templates: DataPairModel[],
     } = $props();
 
     function onTitleUpdated(newTitle: string){
         window.dispatchEvent(new CustomEvent(CV_EVENTS.CV_TITLE_UPDATED, { detail: { newTitle }}))
+    }
+
+    function onSettingsChanged(type: string, newSetting: number){
+        window.dispatchEvent(new CustomEvent(CV_EVENTS.CV_SETTING_CHANGED, { detail: { type, newSetting }}))
     }
 
     function onSaveClicked(){
@@ -38,7 +46,18 @@
 <div class="lg:col-span-8 xl:col-span-9">
     <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-sm border border-slate-200/50 min-h-[300px]">
         <div class="h-full flex flex-col">
-            <Header title={title} canSave={title.trim() !== ""} onTitleChanged={(e) => onTitleUpdated(e)} onSaveClicked={onSaveClicked}/>
+            <Header 
+                title={title}
+                canSave={title.trim() !== ""}
+                themes={themes}
+                templates={templates}
+                selectedTheme={cv.theme}
+                selectedTemplate={cv.template}
+                onTitleChanged={(e) => onTitleUpdated(e)}
+                onSaveClicked={onSaveClicked}
+                onThemeChanged={(e) => onSettingsChanged("theme", e)}
+                onTemplateChanged={(e) => onSettingsChanged("template", e)}    
+            />
             <Separator.Root
                 class="bg-gradient-to-r from-slate-100 to-slate-300 shrink-0 data-[orientation=horizontal]:h-px data-[orientation=vertical]:h-full data-[orientation=horizontal]:w-full data-[orientation=vertical]:w-[1px]"
             />
