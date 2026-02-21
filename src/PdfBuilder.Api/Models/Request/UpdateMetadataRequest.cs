@@ -9,6 +9,6 @@ namespace PdfBuilder.Api.Models.Request
 
         public string Title { get; set; } = string.Empty;
 
-        public JsonObject Content { get; set; }
+        public string Content { get; set; }
     }
 }
