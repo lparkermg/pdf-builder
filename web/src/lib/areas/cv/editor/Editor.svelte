@@ -6,11 +6,12 @@
     import { Plus, Trash } from "lucide-svelte";
     import SectionHeader from "./section/SectionHeader.svelte";
     import { CV_EVENTS } from "$lib/internal/constants";
+    import Section from "./section/Section.svelte";
     let {
         cv,
         title
     }:{
-        cv: CvModel | undefined
+        cv: CvModel
         title: string
     } = $props();
 
@@ -20,6 +21,18 @@
 
     function onSaveClicked(){
         window.dispatchEvent(new Event(CV_EVENTS.SAVE_CV))
+    }
+
+    function onContentUpdated(type: string, sectionId: number, newContent: string) {
+        window.dispatchEvent(new CustomEvent(CV_EVENTS.CV_SECTION_UPDATED, { detail: { type, sectionId, newContent }}))
+    }
+
+    function onSectionRemoved(type: string, sectionId: number){
+        window.dispatchEvent(new CustomEvent(CV_EVENTS.CV_SECTION_REMOVED, { detail: { type, sectionId }}))
+    }
+
+    function onSectionAdded(type: string){
+        window.dispatchEvent(new CustomEvent(CV_EVENTS.CV_SECTION_ADDED, { detail: { type }}))
     }
 </script>
 <div class="lg:col-span-8 xl:col-span-9">
@@ -35,10 +48,20 @@
                         class={`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0 ${
                                 "hover:bg-accent hover:text-accent-foreground text-slate-400 hover:text-indigo-600"
                             }`}
+                        onclick={() => onSectionAdded("sidebar")}
                     >
                         <Plus />
                     </Button.Root>
                 </SectionHeader>
+                {#each cv.sidebar as sidebar, index}
+                    <div class="rounded-xl border bg-card text-card-foreground shadow p-2 cursor-pointer transition-all duration-200 border-2 hover:shadow-md border-transparent bg-white hover:border-slate-200">
+                    <Section
+                        content={sidebar}
+                        onContentChanged={(e:string) => onContentUpdated("sidebar", index, e)}
+                        onRemoveContentClicked={() => onSectionRemoved("sidebar", index)}
+                    />
+                    </div>
+                {/each}
             </div>
 
             <Separator.Root
@@ -50,10 +73,20 @@
                         class={`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-6 [&_svg]:shrink-0 ${
                                 "hover:bg-accent hover:text-accent-foreground text-slate-400 hover:text-indigo-600"
                             }`}
+                        onclick={() => onSectionAdded("main")}
                     >
                         <Plus />
                     </Button.Root>
                 </SectionHeader>
+                {#each cv.content as content, index}
+                    <div class="rounded-xl border bg-card text-card-foreground shadow p-4 cursor-pointer transition-all duration-200 border-2 hover:shadow-md border-transparent bg-white hover:border-slate-200">
+                    <Section 
+                        content={content}
+                        onContentChanged={(e:string) => onContentUpdated("main", index, e)}
+                        onRemoveContentClicked={() => onSectionRemoved("main", index)}
+                    />
+                    </div>
+                {/each}
             </div>
         </div>
     </div>

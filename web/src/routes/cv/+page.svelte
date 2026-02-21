@@ -94,6 +94,38 @@
 
             title = newTitle
         })
+
+        on(window, CV_EVENTS.CV_SECTION_ADDED, (e:Event) => {
+            const { type } = (e as CustomEvent<{ type:string }>).detail
+            if(type === "sidebar"){
+                currentCv.sidebar.push("")
+            }
+            if(type === "main"){
+                currentCv.content.push("")
+            }
+        })
+
+        on(window, CV_EVENTS.CV_SECTION_UPDATED, (e:Event) => {
+            const { type, sectionId, newContent } = (e as CustomEvent<{ type:string, sectionId:number, newContent:string }>).detail
+
+            if(type === "sidebar"){
+                currentCv.sidebar[sectionId] = newContent
+            }
+            if(type === "main"){
+                currentCv.content[sectionId] = newContent
+            }
+        })
+
+        on(window, CV_EVENTS.CV_SECTION_REMOVED, (e:Event) => {
+            const { type, sectionId } = (e as CustomEvent<{ type:string, sectionId:number }>).detail
+
+            if(type === "sidebar"){
+                currentCv.sidebar.splice(sectionId, 1)
+            }
+            if(type === "main"){
+                currentCv.content.splice(sectionId, 1)
+            }
+        })
     })
 
 </script>
