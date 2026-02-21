@@ -29,7 +29,7 @@
 </script>
 <div class="flex items-center gap-3 mb-2">
     <input
-        class="w-full text-lg font-medium border-0 bg-slate-50 focus:bg-white transition-colors h-12 rounded-xl" 
+        class="w-full text-lg font-medium border-0 bg-slate-100 focus:bg-white transition-colors h-12 rounded-xl" 
         placeholder="CV Title..." 
         value={title}
         onchange={(e) => onTitleChanged(e.currentTarget.value)} 
@@ -44,13 +44,23 @@
         <Save />    
     </Button.Root>   
 </div>
-<div class="flex items-start gap-3 mb-4">
-    <select value={selectedTemplate} onchange={(e) => onTemplateChanged(Number(e.currentTarget.value))}>
+<div class="flex items-center justify-start gap-3 mb-4">
+    <label for="template-select">Template:</label>
+    <select
+        id="template-select"
+        class="w-full text-lg font-medium border-0 bg-slate-100 focus:bg-white transition-colors h-12 rounded-xl"
+        value={selectedTemplate} 
+        onchange={(e) => onTemplateChanged(Number(e.currentTarget.value))}>
         {#each templates as template}
             <option value={template.id}>{template.display}</option>
         {/each}
     </select>
-    <select value={selectedTheme} onchange={(e) => onThemeChanged(Number(e.currentTarget.value))}>
+    <label for="theme-select">Theme:</label>
+    <select
+        id="theme-select"
+        class="w-full text-lg font-medium border-0 bg-slate-100 focus:bg-white transition-colors h-12 rounded-xl"
+        value={selectedTheme}
+        onchange={(e) => onThemeChanged(Number(e.currentTarget.value))}>
         {#each themes as theme}
             <option value={theme.id}>{theme.display}</option>
         {/each}

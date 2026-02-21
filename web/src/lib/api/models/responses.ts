@@ -13,6 +13,10 @@ export interface CvLoadResponse {
     content: string;
 }
 
+export interface CvDeleteResponse {
+    success: boolean;
+}
+
 export interface AvailableTemplatesResponse{
     templates: TemplateItemResponse[];
 }

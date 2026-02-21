@@ -14,6 +14,6 @@ export const CV_EVENTS = {
 export const EMPTY_CV: CvModel = {
     template: 0,
     theme: 0,
-    content: [],
-    sidebar: []
+    content: [""],
+    sidebar: [""]
 }

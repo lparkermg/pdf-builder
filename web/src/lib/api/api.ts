@@ -1,5 +1,5 @@
 import type { CvModel } from "$lib/internal/models";
-import type { AvailableTemplatesResponse, AvailableThemesResponse, CvLoadResponse, MetadataResponse } from "./models/responses";
+import type { AvailableTemplatesResponse, AvailableThemesResponse, CvDeleteResponse, CvLoadResponse, MetadataResponse } from "./models/responses";
 
 export async function getMetadata(baseUri: string, origin:string, abortController: AbortController, onError: (e: Error) => void): Promise<MetadataResponse | undefined> {
     if (baseUri.trim() === "" || origin.trim() === ""){
@@ -79,6 +79,26 @@ export async function getCv(baseUri: string, origin: string, abortController: Ab
     }
 
     return await response.json() as CvLoadResponse;
+}
+
+export async function deleteCv(baseUri: string, origin: string, abortController: AbortController, onError: (e: Error) => void, id: string): Promise<CvDeleteResponse | undefined>{
+    if (baseUri.trim() === "" || origin.trim() === ""){
+        onError(new Error("Failed configuration validation for baseUri or origin. Both have to be populated."))
+        return undefined;
+    }
+
+    const uri = `${baseUri}/saves?id=${id}`;
+    const response = await fetch(uri, {
+        method: "DELETE",
+        signal: abortController.signal
+    });
+
+    if(!response.ok){
+        onError(new Error(`Failed to delete cv with status ${response.statusText} (${response.status})`))
+        return undefined;
+    }
+
+    return await response.json() as CvDeleteResponse;
 }
 
 

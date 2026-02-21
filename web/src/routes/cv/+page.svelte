@@ -48,7 +48,7 @@
             
         })
 
-        on(window, CV_EVENTS.DELETE_CV, (e: Event) => {
+        on(window, CV_EVENTS.DELETE_CV, async (e: Event) => {
             const { id } = (e as CustomEvent<{ id: string}>).detail;
 
             if (id === selectedId){
@@ -56,7 +56,21 @@
                 currentCv = EMPTY_CV
                 title = undefined
             }
-            // TODO: Request to delete CV here.
+
+            const resp = await api.deleteCv(
+                data.baseUri,
+                window.location.host,
+                abortController,
+                (e) => console.error(e),
+                id);
+
+            if (resp !== undefined && resp.success){
+                const loadedMetadata = await api.getMetadata(data.baseUri, window.location.host, abortController, (e) => console.error(e));
+
+                if(loadedMetadata){
+                    cvs = metadataResponseToModel(loadedMetadata).metadata
+                }
+            }
         })
 
         on(window, CV_EVENTS.SAVE_CV, async (e:Event) => {
