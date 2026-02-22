@@ -1,5 +1,6 @@
 <script lang="ts">
     import { Button } from "bits-ui";
+    import { ArrowBigLeft } from "lucide-svelte";
 
     let {
         title,
@@ -16,9 +17,18 @@
     }
 </script>
 <div class="flex items-center justify-between mb-8">
+    <div class="flex flex-row gap-8">
+    <Button.Root
+        href="/"
+        class="flex flex-row items-center text-slate-400 hover:text-violet-400 focus:text-violet-800 max-w-[200px]"
+        >
+        <ArrowBigLeft class="mr-1"/>
+        Go Home
+    </Button.Root>
     <div>
         <h1 class="text-2xl font-semibold text-slate-900 tracking-tight">{title}</h1>
         <p class="text-slate-500 text-sm mt-1">{subtitle}</p>
+    </div>
     </div>
     <Button.Root 
         onclick={handleActionClicked}
