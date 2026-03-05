@@ -11,16 +11,27 @@
     import * as api from "$lib/api/api";
     import type { CvModel } from "$lib/internal/models";
     import { metadataResponseToModel } from "$lib/internal/utils/converters";
+    import { Button } from "bits-ui";
+    import { SquareX } from "lucide-svelte";
+    import NotificationBanner from "$lib/ui/components/notification-banner.svelte";
+    import { fade } from "svelte/transition";
     interface CvPageProps {
         data: PageLoadData
     }
     const { data }: CvPageProps = $props()
-
+    console.log(data)
     let abortController = new AbortController();
     let cvs = $state(data.metadata.metadata)
     let currentCv: CvModel = $state(EMPTY_CV)
     let selectedId: string | undefined = $state(undefined)
     let title: string | undefined = $state(undefined)
+
+    let showNotification: boolean = $state(false)
+    let notificationMessage: string = $state("")
+    let notificationType: "success" | "error" | "info" = $state("success")
+    let downloadLink: string | undefined = $state(undefined)
+
+
 
     onMount(() => {
         on(window, "header-action-clicked", (e: Event) => {
@@ -103,6 +114,33 @@
             }
         })
 
+        on(window, CV_EVENTS.GENERATE_CV, async (e:Event) => {
+            if(selectedId !== undefined && selectedId?.trim() !== ""){
+                // We're generating an existing CV.
+                const link = await api.generateCv(
+                    data.baseUri,
+                    window.location.host,
+                    abortController,
+                    (e) => console.error(e),
+                    currentCv,
+                )
+
+                if(link){
+                    downloadLink = `${data.baseUri}${link.replaceAll('"', '')}`
+                    notificationMessage = "CV generated successfully!"
+                    notificationType = "success"
+                    showNotification = true
+                } else {
+                    notificationMessage = "There was an error generating your CV. Please try again."
+                    notificationType = "error"
+                    showNotification = true
+                }
+            } else {
+                // Log that we can't generate a CV that hasn't been saved yet, or show a message on the UI.
+                console.error("Can't generate a CV that hasn't been saved yet.")
+            }
+        })
+
         on(window, CV_EVENTS.CV_TITLE_UPDATED, (e:Event) => {
             const { newTitle } = (e as CustomEvent<{ newTitle: string }>).detail;
 
@@ -153,9 +191,31 @@
         })
     })
 
+    function downloadCv(){
+        if(downloadLink){
+            fetch(downloadLink).then(resp => resp.blob())
+            .then(blob => {
+                        const link = document.createElement("a");
+                        link.href = URL.createObjectURL(blob);
+                        link.download = `${title ?? "cv"}.pdf`;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        showNotification = false;
+                    });
+        }
+    }
+
 </script>
 <Background>
     <Header title="CV Builder" subtitle="Create and manage your CVs with markdown" action="+ New CV"/>
+    {#if showNotification}
+        <NotificationBanner message={notificationMessage} type={notificationType} onDismiss={() => showNotification = false} transition={n => fade(n, { duration: 250 })}>
+            {#if downloadLink}
+                <Button.Root class="rounded-xl p-1 pl-2 pr-2 bg-green-100 text-green-800 hover:text-green-700 hover:bg-green-200" onclick={downloadCv}>Download CV</Button.Root>
+            {/if}
+        </NotificationBanner>
+    {/if}
     <GridContent>
         <!--Sidebar-->
         <Sidebar 
@@ -164,7 +224,7 @@
             selectedId={selectedId}
         />
         <!--Editor Area-->
-        <Editor title={title ?? ""} cv={currentCv} themes={data.themes} templates={data.templates} />
+        <Editor title={title ?? ""} cv={currentCv} themes={data.themes} templates={data.templates} canGenerate={selectedId != undefined}/>
     </GridContent>
 </Background>
         

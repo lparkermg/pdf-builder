@@ -11,12 +11,14 @@
         cv,
         title,
         themes,
-        templates
+        templates,
+        canGenerate,
     }:{
         cv: CvModel
         title: string
         themes: DataPairModel[],
         templates: DataPairModel[],
+        canGenerate: boolean
     } = $props();
 
     function onTitleUpdated(newTitle: string){
@@ -29,6 +31,10 @@
 
     function onSaveClicked(){
         window.dispatchEvent(new Event(CV_EVENTS.SAVE_CV))
+    }
+
+    function onGenerateClicked(){
+        window.dispatchEvent(new Event(CV_EVENTS.GENERATE_CV))
     }
 
     function onContentUpdated(type: string, sectionId: number, newContent: string) {
@@ -49,12 +55,14 @@
             <Header 
                 title={title}
                 canSave={title.trim() !== ""}
+                canGenerate={canGenerate}
                 themes={themes}
                 templates={templates}
                 selectedTheme={cv.theme}
                 selectedTemplate={cv.template}
                 onTitleChanged={(e) => onTitleUpdated(e)}
                 onSaveClicked={onSaveClicked}
+                onGenerateClicked={onGenerateClicked}
                 onThemeChanged={(e) => onSettingsChanged("theme", e)}
                 onTemplateChanged={(e) => onSettingsChanged("template", e)}    
             />

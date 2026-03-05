@@ -4,6 +4,7 @@ export const CV_EVENTS = {
     LOAD_CV: "load_cv",
     DELETE_CV: "delete_cv",
     SAVE_CV: "save_cv",
+    GENERATE_CV: "generate_cv",
     CV_TITLE_UPDATED: "cv_title_updated",
     CV_SECTION_ADDED: "cv_section_added",
     CV_SECTION_REMOVED: "cv_section_removed",
