@@ -101,8 +101,6 @@ export async function deleteCv(baseUri: string, origin: string, abortController:
     return await response.json() as CvDeleteResponse;
 }
 
-
-
 export async function saveNewCv(
     baseUri: string,
     origin: string,
@@ -174,4 +172,35 @@ export async function saveCv(
     }
 
     return;
+}
+
+export async function generateCv(
+    baseUri: string,
+    origin: string,
+    abortController: AbortController,
+    onError: (e: Error) => void,
+    cv: CvModel): Promise<string | undefined> {
+    if (baseUri.trim() === "" || origin.trim() === ""){
+        onError(new Error("Failed configuration validation for baseUri or origin. Both have to be populated."))
+        return undefined;
+    }
+
+    const jsonContent = JSON.stringify(cv);
+
+    const uri = `${baseUri}/cv`;
+    const response = await fetch(uri, {
+        method: "POST",
+        body: jsonContent,
+        headers:{
+            "Content-Type": "application/json"
+        },
+        signal: abortController.signal
+    });
+
+    if(!response.ok){
+        onError(new Error(`Failed to generate cv with status ${response.statusText} (${response.status})`))
+        return undefined;
+    }
+
+    return await response.text()
 }
